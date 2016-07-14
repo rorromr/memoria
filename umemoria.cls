@@ -146,7 +146,7 @@ PROF. GUÍA: SR. \MakeUppercase\@guia \\
 \renewcommand{\maketitle}{
 	\begin{titlepage}
 		\begin{minipage}{1.6cm}
-			\includegraphics[scale=.12]{imagenes/escudoU.pdf}
+			\includegraphics[scale=.12]{img/u_logo.pdf}
 		\end{minipage}
 		\begin{minipage}[t]{12cm}
 			UNIVERSIDAD DE CHILE\\FACULTAD DE CIENCIAS FÍSICAS Y MATEMÁTICAS\\\MakeUppercase\@depto

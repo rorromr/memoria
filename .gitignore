@@ -24,9 +24,8 @@
 *.and
 *.adx
 *.tex~
-*.pdf
 .temp_*
 *.backup
 
-*.pdf
-*.png
+/*.pdf
+/*.png
