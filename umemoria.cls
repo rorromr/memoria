@@ -41,9 +41,9 @@
 
 %% Lenguaje
 \addto\captionsspanish{\renewcommand\tablename{Tabla}}
-\addto\captionsspanish{\renewcommand\contentsname{Tabla de Contenidos}}
+\addto\captionsspanish{\renewcommand\contentsname{Índice de Contenidos}}
 \addto\captionsspanish{\renewcommand\listtablename{Índice de Tablas}}
-\addto\captionsspanish{\renewcommand\listfigurename{Índice de Ilustraciones}}
+\addto\captionsspanish{\renewcommand\listfigurename{Índice de Figuras}}
 
 %% Interlineado
 \RequirePackage{parskip}
