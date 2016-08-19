@@ -1,17 +1,6 @@
 \chapter{Marco teórico}
 
-En este capitulo, se introducen conceptos básicos sobre robots y sus componentes.
-
-La primera sección describe al robot industrial utilizado y sus componentes de hardware.
-
-Finalmente se hace una breve descripción de distintos componentes de software utilizados.
-
-
 \section{Manipulador robótico}
-
-
-
-\subsection{Tipos de manipuladores}
 
 \subsection{Características Scorbot ER VII}
 
@@ -51,13 +40,57 @@ Usualmente, el cálculo de la cinemática inversa involucra la resolución de si
 
 La obtención de modelos exactos de cinemática directa e inversa es tratado de forma extensa en \cite{cole2007} y \cite{predescu2015}.
 
-\section{Control de motores DC}
+\section{Motores de corriente continua}
 
-\subsection{Sistemas electrónicos involucrados}
+El motor de corriente continua (CC) es la máquina eléctrica empleada en aplicaciones de potencia y tracción. Su sencillo principio de funcionamiento y gran versatilidad han permitido que siga vigente hasta nuestros días, a pesar de ser constructivamente más complejo que las que motores BLDC. Su velocidad fácilmente controlable, posibilidad de girar en ambos sentidos, lo hacen ideal para aplicaciones de tracción y control de posición.
 
-\subsection{Concepto de tiempo real}
+El funcionamiento del motor de CC se basa en la fuerza generada por la interacción de un campo magnético inmóvil y uno generado por una bobina móvil, montada sobre un eje de rotación. La bobina móvil es alimentada a través de un sistema de escobillas y delgas para invertir la dirección de la corriente y, por consiguiente, el sentido del campo magnético generado, logrando que el torque resultante sea siempre favorable al sentido de giro \cite{vargas2006}. En la Figura \ref{cap2_motorcc} se muestra la bobina dentro de un campo magnético fijo de dirección horizontal.
 
-\subsection{Buses de campo}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+            \includegraphics[width=\textwidth]{img/cap2/motor_cc1.png}
+            \caption{Bobina elemental del motor de C.C. dispuesta sobre un eje de giro y alimentada a través de las escobillas.}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[b]{0.4\textwidth}
+            \includegraphics[width=\textwidth]{img/cap2/motor_cc2.png}
+            \caption{Bobina montada en un rotor dentro de un campo magnético fijo cuya dirección es perpendicular al eje de giro.}
+    \end{subfigure}
+    \caption{Bobinas del motor CC}
+    \label{cap2_motorcc}
+\end{figure}
+
+
+
+El circuito equivalente del motor CC se divide en dos partes: el circuito de excitación, que genera el campo magnético inmóvil; y el circuito motriz, en el que se representa al rotor (o armadura) como una fuente de tensión $E_a$. El campo magnético de dirección fija generado por el estator puede ser producido por imanes permanentes, como es el caso del los motores que posee el manipulador Scorbot ER-VII. La interacción entre ambos circuitos queda descrita por las siguientes ecuaciones:
+
+\begin{eqnarray}
+e_a &=& G \, \omega_r \, i_c \\
+t &=& G \, i_{\phi} \, i_c
+\end{eqnarray}
+
+Donde Ea es el voltaje de armadura, $G$ es un parámetro de la máquina llamado inductancia rotacional, $\omega_r$ es la velocidad de giro del rotor y $t$ es el torque generado. Finalmente $i_{\phi}$ e $i_a$ son las corrientes de excitación y de armadura, respectivamente. Dado que se utilizan motores de imanes permanentes, por lo que el término $i_{\phi}$ se considera constante.
+
+\subsection{Control de motores de corriente continua}
+
+Para el control de motores de CC se utiliza un circuito llamado convertidor de puente completo o puente H, el cual utiliza la modulación de ancho de pulso (PWM) en una estructura de puente que permite la conducción en ambos sentidos, tal como se muestra en la Figura \ref{cap2_punteh}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=.2]{img/cap2/puenteh}
+  \caption{Configuración del puente H.}
+  \label{cap2_punteh}
+\end{figure}
+
+El uso de modulación PWM en el encendido de los transistores permite controlar la alimentación del motor CC. El diseño de estos dispositivos de potencia es un trabajo complejo, pues requiere la correcta elección de semiconductores, un \textit{layout} capaz de soportar altas corrientes y evitar la aparición de corrientes parásitas. Afortunadamente, dado la gran demanda de estos dispositivos por parte de la industria automovilística, fabricantes de semiconductores entregan soluciones acorde a los requerimientos. La Figura \ref{cap2_punteh_infineon} muestra un puente H fabricado por Infineon Technologies AG, que además de provee protección sobre sobrevoltaje y sobrecorriente.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=.35]{img/cap2/puenteh_infineon}
+  \caption{Puente H fabricado por Infineon Technologies AG basado en BTN8982TA.}
+  \label{cap2_punteh_infineon}
+\end{figure}
 
 \section{Interfaces hápticas}
 
@@ -81,17 +114,13 @@ Un aspecto importante del diseño es el desacople entre la posición y orientaci
 
 \subsection{ROS}
 
-Hola esto es una cita a ROS \cite{quigley2009}.
+Robot Operating System (ROS) \cite{quigley2009} es un  framework para el desarrollo de aplicaciones robóticas, ofrece herramientas, librerías, abstracción de hardware, controladores de dispositivos, visualizadores, comunicación entre procesos, gestión de paquetes, entre otros.
 
+A pesar de su nombre, ROS no es un sistema operativo propiamente dicho, es más bien un middlewere que se integra en sistemas GNU/Linux como Ubuntu. Una de sus principales ventajas es su amplia comunidad y que se encuentra bajo la licencia BSD, que permite el uso del software en aplicaciones comerciales. Fue desarrollado en 2007 por el Laboratorio de Inteligencia Artificial de Stanford bajo el nombre de \textit{switchyard}, luego su desarrollo continuó en el laboratorio de investigación robótico Willow Garage, actualmente la OSRF (\textit{Open Source Robotics Foundation}) es la encargada de mantener las herramientas básicas de ROS.
 
+Uno es los aspectos más importantes de ROS es interfaz para la comunicación entre procesos. Un nodo, unidad de software básica en ROS, puede publicar o suscribirse a un tópico. En este tópico se escriben/leen mensajes que han sido depositados por otros nodos. Puede haber varios publicadores y subscriptores sobre el mismo tópico concurrentemente. Un único nodo puede publicar y subscribiese a múltiples tópicos.
 
-Esto es una cita a TF \cite{foote2013}.
+Los mensajes son estructuras de datos que soportan tipos primitivos como
+enteros, punto flotante, arreglos de primitivas y constantes. Adicionalmente los mensajes pueden estar compuestos por otros mensajes y por arreglos de mensajes, dando la profundidad que se requiera.
 
-cita a Orocos \cite{orocos2001}
-
-\cite{craig1989}
-
-\cite{gier2015}
-
-\cite{diankov2010}
-
+Otro elemento primordial lo constituyen los servicios, estos se definen mediante un par de mensajes, unos para la solicitud (\textit{request}) y otro para la respuesta (\textit{response}). Un nodo ofrece un servicio bajo un nombre y un cliente llama al servicio enviando un mensaje de solicitud y esperando a la respuesta.
