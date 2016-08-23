@@ -109,6 +109,17 @@ Phantom Omni es un dispositivo háptico de seis grados de libertad (6 DOF) desar
 
 Un aspecto importante del diseño es el desacople entre la posición y orientación \cite{beckman2007}, las tres primeras articulaciones son usadas para posicionar el \textit{stylus} y las restantes establecen la orientación del mismo. Los ejes de giro de estas últimas tres articulaciones se intersectan en un mismo punto, por lo que se puede interpretar como una articulación esférica.
 
+\section{Bus de campo}
+
+Los primeros enlaces de datos estaban limitadas a la conexión entre dos dispositivos, esto se traducía que cada nuevo dispositivo debía ser conectado directamente al controlador en una topología de estrella. Esto llevó al desarrollo de buses de campo (\textit{fieldbuses}), definidos en el estándar IEC 61158, permitiendo la conexión múltiples nodos usando el mismo cable, lo que se denomina \textit{multidrop bus}. Esto trajo consigo cableados más simples y redes más modulares. Compartir un bus entre varios nodos requiere de un protocolo que evite que más de un dispositivo envíe datos por el bus al mismo tiempo. No todos los protocoles son de naturaleza determinista, por lo que algunos son preferibles a otros en tareas criticas.
+
+\subsection{EtherCAT}
+
+EtherCAT (\textit{Ethernet for Control Automation Technology}) es un bus de campo de código abierto, fue creado con el fin de emplear el potencial Ethernet y mejorar las áreas donde este falla al momento de implementarse en redes de control, de esta forma introduce comportamiento determinista y reducción en el tiempo de procesamiento de paquetes de datos pequeños.
+
+
+
+
 
 \section{Componentes de software}
 
