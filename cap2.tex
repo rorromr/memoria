@@ -9,7 +9,7 @@ El Scorbot-ER VII es un  manipulador robótico de cinco grados de libertad (5 DO
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.5]{img/cap2/scorbot}
-  \caption{Scorbot-ER VII.}
+  \caption{Manipulador Scorbot ER-VII de Eshed Robotec.}
   \label{cap2_scorbot}
 \end{figure}
 
@@ -117,9 +117,39 @@ Los primeros enlaces de datos estaban limitadas a la conexión entre dos disposi
 
 EtherCAT (\textit{Ethernet for Control Automation Technology}) es un bus de campo de código abierto, fue creado con el fin de emplear el potencial Ethernet y mejorar las áreas donde este falla al momento de implementarse en redes de control, de esta forma introduce comportamiento determinista y reducción en el tiempo de procesamiento de paquetes de datos pequeños.
 
+\subsubsection{Estructura maestro-esclavo}
 
+EtherCAT emplea una estructura maestro-esclavo donde cada dispositivo es conectado en cadena uno tras otro como se muestra en la Figura \ref{cap2_ethercat_chain}.
 
+La transmisión es iniciada por el dispositivo maestro, el mensaje es transmitido a la cadena de esclavos donde cada dispositivo puede leer o escribir en el mensaje antes de pasarlo al siguiente dispositivo. Una vez el mensaje alcanza el último dispositivo esclavo, éste lo envía hacia el maestro a través de la cadena. Desde fuera, de la estructura formada por la cadena de esclavos se puede considerar como un nodo Ethernet simple.
 
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=.5]{img/cap2/ethercat_chain}
+  \caption{Estructura maestro esclavo de EtherCAT.}
+  \label{cap2_ethercat_chain}
+\end{figure}
+
+\subsubsection{Enlace de datos}
+
+Dado que cada dispositivo esclavo debe leer el mensaje antes de saber que hacer con él, este proceso puede introducir una cantidad de calculo que debe realizar el software y que va en desmedro del rendimiento aplicación principal. Para evitar eso cada esclavo esta equipado con \textit{EtherCAT Slave Controller} (ESC), el cual procesa el mensaje recibido en hardware, reduciendo de forma significativa el tiempo de procesamiento en el esclavo. Gracias a esto, el dispositivo esclavo empieza la transmisión al siguiente nodo cuando aún esta recibiendo el mensaje. El ESC contiene toda la funcionalidad de la capa de enlace de datos especificada por el estándar, la capa de aplicación depende del tipo de ESC usada.
+
+Dado el enlace de datos se realiza por hardware, los dispositivos esclavos deben contar con hardware especializado para usar el bus de campo EtherCAT. Usualmente existen dos alternativas para la integración de EtherCAT en un dispositivo: uso de un EtherCAT ASIC o integración de un IP usando una FPGA. Actualmente, esta tecnología se integra en microcontroladores, permitiendo diseños más compactos y económicos (Figura \ref{cap2_ethercat}).
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{img/cap2/ethercat_asic.png}
+    \caption{EtherCAT ASIC de Beckhoff Automation GmbH.}
+    \end{subfigure}%
+    ~
+  \begin{subfigure}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{img/cap2/xmc4800}
+    \caption{Placa de desarrollo del microcontrolador XMC4800 de Infineon Technologies AG con nodo EtherCAT integrado}
+    \end{subfigure}
+  \caption{Alternativas de integración de EtherCAT en dispositivos.}
+  \label{cap2_ethercat}
+\end{figure}
 
 \section{Componentes de software}
 
@@ -135,3 +165,17 @@ Los mensajes son estructuras de datos que soportan tipos primitivos como
 enteros, punto flotante, arreglos de primitivas y constantes. Adicionalmente los mensajes pueden estar compuestos por otros mensajes y por arreglos de mensajes, dando la profundidad que se requiera.
 
 Otro elemento primordial lo constituyen los servicios, estos se definen mediante un par de mensajes, unos para la solicitud (\textit{request}) y otro para la respuesta (\textit{response}). Un nodo ofrece un servicio bajo un nombre y un cliente llama al servicio enviando un mensaje de solicitud y esperando a la respuesta.
+
+\section{Evaluación del sistema}
+
+Para la evaluación del sistema se propone emular el comportamiento de un robot picarocas utilizado en la industria minera, como el que se muestra en la Figura \ref{cap2_picarocas}. Estas máquinas tienen una extensión cercana a los \SI{12}{\meter}, son controladas usando una serie de actuadores lineales hidráulicos y poseen un martillo de impacto como herramienta  en el efector. Son usadas en faenas de minería subterránea para fracturar grandes fragmentos de roca, que luego de reducidos son transportados a hacia otras unidades de molienda.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=.5]{img/cap2/picarocas}
+  \caption{Picarocas utilizado en industria minera.}
+  \label{cap2_picarocas}
+\end{figure}
+
+
+Notamos que su configuración cinemática es similar a la que posee el robot Scorbot ER-VII, pues tiene una base capaz de rotar y la mayoría de sus articulaciones tienen una configuración que permite un movimiento en el plano.
