@@ -124,35 +124,48 @@ El uso de modulación PWM en el encendido de los transistores permite controlar 
 
 Dada la naturaleza inductiva del circuito de armadura, la modulación PWM de la tensión no establece un régimen de corriente pulsante, si no cierto nivel de rizo en la corriente estableciendo un estado que se denomina de corriente plana. Si el motor posee una baja inductancia de armadura, es posible que salga del régimen de corriente plana y se produzcan torques pulsantes. Este efecto puede ser reducido aumentando la frecuencia de conmutación o la conexión de inductancias en serie.
 
-Afortunadamente, dado la gran demanda de estos dispositivos por parte de la industria automovilística, fabricantes de semiconductores entregan soluciones acorde a los requerimientos. La Figura \ref{cap2_punteh_infineon} muestra un puente H fabricado por Infineon Technologies AG, que además de provee protección sobre sobrevoltaje y sobrecorriente.
+Afortunadamente, dado la gran demanda de estos dispositivos por parte de la industria automovilística, fabricantes de semiconductores entregan soluciones acorde a los requerimientos. La Figura \ref{cap2_punteh_infineon} muestra un puente H fabricado por Infineon Technologies AG\textregistered, que además de provee protección sobre sobrevoltaje y sobrecorriente.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=.35]{img/cap2/puenteh_infineon}
-  \caption{Puente H fabricado por Infineon Technologies AG basado en BTN8982TA.}
+  \caption{Puente H fabricado por Infineon Technologies AG\textregistered \, basado en BTN8982TA.}
   \label{cap2_punteh_infineon}
 \end{figure}
 
 \section{Interfaces hápticas}
 
-Los dispositivos hápticos son capaces de proporcionar una retroalimentación de fuerza al usuario que lo emplea, de esta forma, complementan sistemas de operación visuales al entregar más información al operador. Esta tecnología puede aplicarse a múltiples sectores con el fin de facilitar su ejecución: medicina, realidad virtual, modelado, robótica, entre otras.
+Los dispositivos hápticos son capaces de proporcionar una retroalimentación de fuerza al usuario que lo emplea, de esta forma complementan sistemas de operación visuales al entregar más información al operador. Esta tecnología puede aplicarse a múltiples sectores con el fin de facilitar su ejecución: medicina, realidad virtual, modelado, robótica, entre otras.
 
-\subsection{Phantom Omni}
+\subsection{Phantom Omni \texttrademark}
 
-Phantom Omni es un dispositivo háptico de seis grados de libertad (6 DOF) desarrollado por Sensable, permite leer la posición de sus seis articulaciones y posee tres actuadores conectados a los tres primeras articulaciones, permitiendo la aplicación de fuerzas, que solo pueden controlar la posición del \textit{stylus} en el espacio cartesiano.
+Phantom Omni \texttrademark (actualmente Geomatic\textregistered \, Touch \texttrademark) es un dispositivo háptico de seis grados de libertad (6 \textit{DOF}) desarrollado por Sensable\textregistered, permite leer la posición de sus seis articulaciones y posee tres actuadores conectados a los tras primeras articulaciones, permitiendo la aplicación de fuerzas, que solo pueden controlar la posición del \textit{stylus} en el espacio cartesiano.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=.2]{img/cap2/phantom_omni}
-  \caption{Phantom Omni.}
+  \caption{Phantom Omni \texttrademark.}
   \label{cap2_phantom}
 \end{figure}
 
 Un aspecto importante del diseño es el desacople entre la posición y orientación \cite{beckman2007}, las tres primeras articulaciones son usadas para posicionar el \textit{stylus} y las restantes establecen la orientación del mismo. Los ejes de giro de estas últimas tres articulaciones se intersectan en un mismo punto, por lo que se puede interpretar como una articulación esférica.
 
+La configuración cinemática del Phantom Omni \texttrademark \, es similar a la del robot Scorbot ER VII, pues poseen una cadena cinemática con una base, dos elementos articulados que se mueven en un plano y una muñeca. La mayor diferencia entre ellos, aparte de su tamaño, radica en que el dispositivo háptico posee 6 grados de libertad y solo tres articulaciones son actuadas, por otro lado el robot posee solo 5 grados de libertad, todos ellos actuados. 
+
 \section{Bus de campo}
 
-Los primeros enlaces de datos estaban limitadas a la conexión entre dos dispositivos, esto se traducía que cada nuevo dispositivo debía ser conectado directamente al controlador en una topología de estrella. Esto llevó al desarrollo de buses de campo (\textit{fieldbuses}), definidos en el estándar IEC 61158, permitiendo la conexión múltiples nodos usando el mismo cable, lo que se denomina \textit{multidrop bus}. Esto trajo consigo cableados más simples y redes más modulares. Compartir un bus entre varios nodos requiere de un protocolo que evite que más de un dispositivo envíe datos por el bus al mismo tiempo. No todos los protocoles son de naturaleza determinista, por lo que algunos son preferibles a otros en tareas criticas.
+Los primeros enlaces de datos estaban limitados a la conexión entre dos dispositivos, esto se traducía en que cada nuevo dispositivo debía ser conectado directamente al controlador en una topología de estrella. Esto llevó al desarrollo de buses de campo (\textit{fieldbuses}), definidos en el estándar IEC 61158, permitiendo la conexión múltiples nodos usando el mismo cable, lo que se denomina \textit{multidrop bus}. Esto trajo consigo cableados más simples y redes más modulares. Compartir un bus entre varios nodos requiere de un protocolo que maneje de forma adecuada el envío y recepción de datos de los dispositivos conectado al bus.
+
+Un esquema de control distribuido requiere de un bus de campo capaz de compartir información con los dispositivos de forma determinista, pues los algoritmos de control e información critica deben cumplir estrictos requerimientos temporales (\textit{timming}). Algunos requerimientos clásicos se describen a continuación:
+
+\begin{itemize}
+
+\item Frecuencia de actualización: Controladores obtienen información de sensores y envían comandos a los actuadores de manera periódica, usualmente, a una frecuencia fija. Esta frecuencia depende de la aplicación en particular, por ejemplo es usual que lazos de control de servomotores tengan frecuencias de actualización cercanas a \SI{1}{kHz}.
+
+\item \textit{Jitter}: Corresponde a la variabilidad temporal durante el envío de señales digitales. La presencia de \textit{jitter} en el bus de campo puede tener un efecto no deseados, siguiendo el ejemplo anterior, un \textit{jitter} de \SI{1}{\milli\second} puede considerarse inaceptable, pues es del orden del tiempo de actualización.
+
+\end{itemize}
+
 
 \subsection{EtherCAT}
 
@@ -162,7 +175,7 @@ EtherCAT (\textit{Ethernet for Control Automation Technology}) es un bus de camp
 
 EtherCAT emplea una estructura maestro-esclavo donde cada dispositivo es conectado en cadena uno tras otro como se muestra en la Figura \ref{cap2_ethercat_chain}.
 
-La transmisión es iniciada por el dispositivo maestro, el mensaje es transmitido a la cadena de esclavos donde cada dispositivo puede leer o escribir en el mensaje antes de pasarlo al siguiente dispositivo. Una vez el mensaje alcanza el último dispositivo esclavo, éste lo envía hacia el maestro a través de la cadena. Desde fuera, de la estructura formada por la cadena de esclavos se puede considerar como un nodo Ethernet simple.
+La transmisión es iniciada por el dispositivo maestro, el mensaje es transmitido a la cadena de esclavos donde cada dispositivo puede leer o escribir en el mensaje antes de pasarlo al siguiente dispositivo. Una vez el mensaje alcanza el último dispositivo esclavo, éste lo envía hacia el maestro a través de la cadena. Desde fuera, de la estructura formada por la cadena de esclavos se puede considerar como un nodo Ethernet.
 
 \begin{figure}[ht]
   \centering
