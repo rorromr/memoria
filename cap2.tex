@@ -42,39 +42,76 @@ La obtención de modelos exactos de cinemática directa e inversa es tratado de 
 
 \section{Motores de corriente continua}
 
-El motor de corriente continua (CC) es la máquina eléctrica empleada en aplicaciones de potencia y tracción. Su sencillo principio de funcionamiento y gran versatilidad han permitido que siga vigente hasta nuestros días, a pesar de ser constructivamente más complejo que las que motores BLDC. Su velocidad fácilmente controlable, posibilidad de girar en ambos sentidos, lo hacen ideal para aplicaciones de tracción y control de posición.
+El motor de corriente continua (CC) es la máquina eléctrica empleada en aplicaciones de potencia y tracción. Su sencillo accionamiento y estructura de control han permitido que siga vigente hasta nuestros días, a pesar de ser constructivamente más complejo que los que motores BLDC y requerir mantenimiento. Su velocidad fácilmente controlable y posibilidad de girar en ambos sentidos, lo  que permite aplicaciones de servo accionamientos y tracción.
 
-El funcionamiento del motor de CC se basa en la fuerza generada por la interacción de un campo magnético inmóvil y uno generado por una bobina móvil, montada sobre un eje de rotación. La bobina móvil es alimentada a través de un sistema de escobillas y delgas para invertir la dirección de la corriente y, por consiguiente, el sentido del campo magnético generado, logrando que el torque resultante sea siempre favorable al sentido de giro \cite{vargas2006}. En la Figura \ref{cap2_motorcc} se muestra la bobina dentro de un campo magnético fijo de dirección horizontal.
+El funcionamiento del motor de CC se basa en la fuerza generada por la interacción de un campo magnético inmóvil y uno generado por una bobina móvil (armadura), montada sobre un eje de rotación. La bobina móvil es alimentada a través de un sistema de escobillas y delgas para invertir la dirección de la corriente y, por consiguiente, el sentido del campo magnético generado, logrando que el torque resultante sea siempre favorable al sentido de giro \cite{vargas2006}. En la Figura \ref{cap2_motorcc} se muestra la bobina dentro de un campo magnético fijo de dirección horizontal.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
             \includegraphics[width=\textwidth]{img/cap2/motor_cc1.png}
-            \caption{Bobina elemental del motor de C.C. dispuesta sobre un eje de giro y alimentada a través de las escobillas.}
-    \end{subfigure}%
+            \caption{Bobina elemental del motor de CC dispuesta sobre un eje de giro y alimentada a través de las escobillas.}
+    \end{subfigure}
     ~
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.48\textwidth}
             \includegraphics[width=\textwidth]{img/cap2/motor_cc2.png}
             \caption{Bobina montada en un rotor dentro de un campo magnético fijo cuya dirección es perpendicular al eje de giro.}
     \end{subfigure}
-    \caption{Bobinas del motor CC}
+    \caption{Bobinas del motor de CC}
     \label{cap2_motorcc}
 \end{figure}
 
 
+El flujo de campo $\phi_f$ de dirección fija generado por el estator puede ser producido por un devanado o imanes permanentes, como es el caso del los motores que posee el manipulador Scorbot ER-VII. El uso de imanes permanentes establece un flujo de campo $\phi_f$ constate, esto mejora la eficiencia de la máquina, pero limita la velocidad de operación de la misma, pues no es posible operar a flujo debilitado.
 
-El circuito equivalente del motor CC se divide en dos partes: el circuito de excitación, que genera el campo magnético inmóvil; y el circuito motriz, en el que se representa al rotor (o armadura) como una fuente de tensión $E_a$. El campo magnético de dirección fija generado por el estator puede ser producido por imanes permanentes, como es el caso del los motores que posee el manipulador Scorbot ER-VII. La interacción entre ambos circuitos queda descrita por las siguientes ecuaciones:
+En un motor de CC, el par de torsión electromagnético $T_m$ es producto de la interacción entre el flujo de campo $\phi_f$ y la corriente de armadura $i_a$.
 
 \begin{eqnarray}
-e_a &=& G \, \omega_r \, i_c \\
-t &=& G \, i_{\phi} \, i_c
+T_m &=& k_f \phi_f i_a \\
+T_m &=& k_T i_a
 \end{eqnarray}
 
-Donde Ea es el voltaje de armadura, $G$ es un parámetro de la máquina llamado inductancia rotacional, $\omega_r$ es la velocidad de giro del rotor y $t$ es el torque generado. Finalmente $i_{\phi}$ e $i_a$ son las corrientes de excitación y de armadura, respectivamente. Dado que se utilizan motores de imanes permanentes, por lo que el término $i_{\phi}$ se considera constante.
+Donde $k_f$ es la constante de par de torsión del motor. Como $\phi_f$ es constante, se usa $k_T= k_f \phi_f$.
+
+En el circuito del inducido se produce una fuerza contraelectromotriz por la rotación de conductores de inducido a una velocidad $\omega_m$ en la presencia de un flujo de campo $\phi_f$.
+
+\begin{equation}
+e_a = k_e \phi_f \omega_m
+\end{equation}
+
+Donde $k_e$ es la constante de voltaje del motor. Se puede demostrar \cite{mohan}, que usando unidades SI $k_e \phi_f = k_T$, de esta forma fuerza contraelectromotriz, también denominada reacción de armadura, esta dada por la Ecuación \ref{eq_reaccion_armadura}.
+
+\begin{equation}\label{eq_reaccion_armadura}
+e_a = k_T \omega_m
+\end{equation}
+
+En la práctica se aplica una fuente de voltaje controlable $v_t$ a los terminales de inducido para establecer una corriente de armadura $i_a$. Por tanto, la corriente $i_a$ en el circuito de inducido se determina por $v_t$, la fuerza contraelectromotriz $e_a$, la resistencia del devanado del inducido $R_a$ y la inductancia del devanado del inducido $L_a$ se ralacionan como muestra la Ecuación \ref{eq_armadura}, esta ecuación se ilustra como circuito equivalente en la Figura \ref{cap2_dc_motor}.
+
+\begin{equation}\label{eq_armadura}
+v_t = e_a + R_a i_a + L_a \dv{i_a}{t}
+\end{equation}
+
+La ecuación anterior determina el comportamiento eléctrico del motor de corriente continua, el comportamiento mecánico esta dado por la Ecuación \ref{eq_mecanica}, donde se ve la interacción del motor con la carga mecánica.
+
+\begin{equation}\label{eq_mecanica}
+T_m = T_l + B \omega_m + J \dv{\omega_m}{t}
+\end{equation}
+
+Donde $J$ y $B$ son la inercia y amortiguamiento equivalente total, respectivamente, de la combinación motor carga y $T_l$ es el par de torsión de trabajo equivalente de la carga.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{img/cap2/dc_motor_circuit}
+  \caption{Circuito equivalente de un motor de corriente continua.}
+  \label{cap2_dc_motor}
+\end{figure}
+
+Un hecho importante de la actuación robot manipuladores corresponde a la naturaleza dinámica de la carga mecánica de cada articulación actuada, esto debido efectos gravitatorios y dinámicos generados por otros enlaces en movimiento de la cadena cinemática.
+
 
 \subsection{Control de motores de corriente continua}
 
-Para el control de motores de CC se utiliza un circuito llamado convertidor de puente completo o puente H, el cual utiliza la modulación de ancho de pulso (PWM) en una estructura de puente que permite la conducción en ambos sentidos, tal como se muestra en la Figura \ref{cap2_punteh}.
+Como se mostró anteriormente, el torque producido por el motor de CC es proporcional a la corriente de armadura, dado que el objetivo es el control de las variables mecánicas (\textit{i.e.} torque, velocidad) es directo establecer como primera estructura el control la corriente de armadura. Para el control de la corriente de armadura es necesario que $v_t$ esté conectado a una fuente de voltaje controlable, esto se logra utilizando un circuito llamado convertidor de puente completo o puente H, el cual utiliza una estructura de puente que permite la conducción en ambos sentidos, tal como se muestra en la Figura \ref{cap2_punteh}.
 
 \begin{figure}[ht]
   \centering
@@ -83,7 +120,11 @@ Para el control de motores de CC se utiliza un circuito llamado convertidor de p
   \label{cap2_punteh}
 \end{figure}
 
-El uso de modulación PWM en el encendido de los transistores permite controlar la alimentación del motor CC. El diseño de estos dispositivos de potencia es un trabajo complejo, pues requiere la correcta elección de semiconductores, un \textit{layout} capaz de soportar altas corrientes y evitar la aparición de corrientes parásitas. Afortunadamente, dado la gran demanda de estos dispositivos por parte de la industria automovilística, fabricantes de semiconductores entregan soluciones acorde a los requerimientos. La Figura \ref{cap2_punteh_infineon} muestra un puente H fabricado por Infineon Technologies AG, que además de provee protección sobre sobrevoltaje y sobrecorriente.
+El uso de modulación PWM en el encendido de los transistores permite controlar el valor efectivo de la tensión de alimentación del motor CC. El diseño de estos dispositivos de potencia es un trabajo complejo, pues requiere la correcta elección de semiconductores, un \textit{layout} capaz de soportar altas corrientes y evitar la aparición de inductancias parásitas.
+
+Dada la naturaleza inductiva del circuito de armadura, la modulación PWM de la tensión no establece un régimen de corriente pulsante, si no cierto nivel de rizo en la corriente estableciendo un estado que se denomina de corriente plana. Si el motor posee una baja inductancia de armadura, es posible que salga del régimen de corriente plana y se produzcan torques pulsantes. Este efecto puede ser reducido aumentando la frecuencia de conmutación o la conexión de inductancias en serie.
+
+Afortunadamente, dado la gran demanda de estos dispositivos por parte de la industria automovilística, fabricantes de semiconductores entregan soluciones acorde a los requerimientos. La Figura \ref{cap2_punteh_infineon} muestra un puente H fabricado por Infineon Technologies AG, que además de provee protección sobre sobrevoltaje y sobrecorriente.
 
 \begin{figure}[ht]
   \centering
