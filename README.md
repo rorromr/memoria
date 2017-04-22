@@ -8,8 +8,8 @@ La versión compilada en PDF puede descargarse desde [aquí](http://latex.aslush
 
 Se deben instalar los siguiente paquetes para usar la plantilla usando Texmaker (4.5):
 
-```
-$ sudo apt-get install texlive-generic-extra texlive-fonts-recommended rubber
+```bash
+sudo apt-get install texlive-full texmaker rubber
 ```
 
 ## Plantilla
