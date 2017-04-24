@@ -6,7 +6,7 @@ La versión compilada en PDF puede descargarse desde [aquí](http://latex.aslush
 
 ## Instalación en Ubuntu 14.04
 
-Se deben instalar los siguiente paquetes para usar la plantilla usando Texmaker (4.5):
+Se deben instalar los siguiente paquetes para usar la plantilla usando Texmaker (4.1):
 
 ```bash
 sudo apt-get install texlive-full texmaker rubber
