@@ -12,6 +12,8 @@ Se deben instalar los siguiente paquetes para usar la plantilla usando Texmaker 
 sudo apt-get install texlive-full texmaker rubber
 ```
 
+Para trabajar con versiones más actualizadas de Latex es recomendable usar este [script](https://github.com/scottkosty/install-tl-ubuntu).
+
 ## Plantilla
 
 Trabajo está basado en la [plantilla LaTeX](https://github.com/FCFM-ADI/memoria-latex) publicada por el ADI.

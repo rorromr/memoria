@@ -239,6 +239,7 @@ Notamos que su configuración cinemática es similar a la que posee el robot Sco
 	\matrix (m1) [row sep=2.5mm, column sep=5mm]
 	{
 		%--------------------------------------------------------------------
+		% First row
 		\node[dspnodeopen,dsp/label=above] (m00) {$x[n]$};    &
 		\node[coordinate]                  (m01) {};          &
 		\node[dspnodefull]                 (m02) {};          &
@@ -304,4 +305,179 @@ Notamos que su configuración cinemática es similar a la que posee el robot Sco
 	\draw[dspflow] (m28) -- (m2X);
 \end{tikzpicture}
 
-
+\begin{tikzpicture}
+ 
+	% Place nodes using a matrix
+	\matrix[row sep=6mm, column sep=6mm]
+	{
+		%--------------------------------------------------------------------
+		\node[dspnodeopen,dsp/label=above] (m00) {$x[n]$};    &
+		\node[dspnodefull]                 (m01) {};          &
+		\node[dspmixer, dsp/label=above]   (m02) {$b_0$};     &
+		\node[dspadder]                    (m03) {};          &
+		\node[dspmixer, dsp/label=above]   (m04) {$1/a_0$};   &
+		\node[dspnodefull]                 (m05) {};          &
+		\node[dspnodeopen,dsp/label=above] (m06) {$y[n]$};    & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m10) {};          &
+		\node[coordinate]                  (m11) {};          &
+		\node[coordinate]                  (m12) {};          &
+		\node[dspsquare]                   (m13) {$\z^{-1}$}; &
+		\node[coordinate]                  (m14) {};          &
+		\node[coordinate]                  (m15) {};          &
+		\node[coordinate]                  (m16) {};          & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m20) {};          &
+		\node[dspnodefull]                 (m21) {};          &
+		\node[dspmixer, dsp/label=above]   (m22) {$b_1$};     &
+		\node[dspadder]                    (m23) {};          &
+		\node[dspmixer, dsp/label=above]   (m24) {$-a_1$};    &
+		\node[dspnodefull]                 (m25) {};          &
+		\node[coordinate]                  (m26) {};          & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m30) {};          &
+		\node[coordinate]                  (m31) {};          &
+		\node[coordinate]                  (m32) {};          &
+		\node[dspsquare]                   (m33) {$\z^{-1}$}; &
+		\node[coordinate]                  (m34) {};          &
+		\node[coordinate]                  (m35) {};          &
+		\node[coordinate]                  (m36) {};          & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m40) {};          &
+		\node[dspnodefull]                 (m41) {};          &
+		\node[dspmixer, dsp/label=above]   (m42) {$b_2$};     &
+		\node[dspadder]                    (m43) {};          &
+		\node[dspmixer, dsp/label=above]   (m44) {$-a_2$};    &
+		\node[dspnodefull]                 (m45) {};          &
+		\node[coordinate]                  (m46) {};          & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m50) {};          &
+		\node                              (m51) {$\vdots$};  & 
+		\node[coordinate]                  (m52) {};          &
+		\node                              (m53) {$\vdots$};  &
+		\node[coordinate]                  (m54) {};          &
+		\node                              (m55) {$\vdots$};  & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m60) {};          &
+		\node[dspnodefull]                 (m61) {};          &
+		\node[dspmixer, dsp/label=above]   (m62) {$b_{M-1}$}; &
+		\node[dspadder]                    (m63) {};          &
+		\node[dspmixer, dsp/label=above]   (m64) {$-a_{N-1}$};&
+		\node[dspnodefull]                 (m65) {};          &
+		\node[coordinate]                  (m66) {};          & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m70) {};          &
+		\node[coordinate]                  (m71) {};          &
+		\node[coordinate]                  (m72) {};          &
+		\node[dspsquare]                   (m73) {$\z^{-1}$}; &
+		\node[coordinate]                  (m74) {};          &
+		\node[coordinate]                  (m75) {};          &
+		\node[coordinate]                  (m76) {};          & \\
+		%--------------------------------------------------------------------
+		\node[coordinate]                  (m80) {};          &
+		\node[coordinate]                  (m81) {};          &
+		\node[dspmixer, dsp/label=above]   (m82) {$b_M$};     &
+		\node[dspadder]                    (m83) {};          &
+		\node[dspmixer, dsp/label=above]   (m84) {$-a_N$};    &
+		\node[coordinate]                  (m85) {};          &
+		\node[coordinate]                  (m86) {};          & \\
+		%--------------------------------------------------------------------
+	};
+ 
+	% Draw connections
+ 
+	\begin{scope}[start chain]
+		\chainin (m00);
+		\chainin (m01) [join=by dspflow];
+		\chainin (m02) [join=by dspconn];
+		\chainin (m03) [join=by dspconn];
+		\chainin (m04) [join=by dspconn];
+		\chainin (m05) [join=by dspflow];
+		\chainin (m06) [join=by dspflow];
+	\end{scope}
+ 
+	\begin{scope}[start chain]
+		\chainin (m01);
+		\chainin (m21) [join=by dspflow];
+		\chainin (m22) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+		\chainin (m13) [join=by dspconn];
+		\chainin (m03) [join=by dspconn];
+	\end{scope}
+ 
+	\begin{scope}[start chain]
+		\chainin (m21);
+		\chainin (m41) [join=by dspflow];
+		\chainin (m42) [join=by dspconn];
+		\chainin (m43) [join=by dspconn];
+		\chainin (m33) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+ 
+	\begin{scope}[start chain]
+		\chainin (m41);
+		\chainin (m51) [join=by dspflow];
+		\chainin (m61) [join=by dspflow];
+		\chainin (m62) [join=by dspconn];
+		\chainin (m63) [join=by dspconn];
+		\chainin (m53) [join=by dspflow];
+		\chainin (m43) [join=by dspconn];		
+	\end{scope}
+ 
+	\begin{scope}[start chain]
+		\chainin (m61);
+		\chainin (m81) [join=by dspline];
+		\chainin (m82) [join=by dspconn];
+		\chainin (m83) [join=by dspconn];
+		\chainin (m73) [join=by dspconn];
+		\chainin (m63) [join=by dspconn];
+	\end{scope}
+ 
+ 
+ 
+	\begin{scope}[start chain]
+		\chainin (m05);
+		\chainin (m25) [join=by dspflow];
+		\chainin (m24) [join=by dspconn];
+		\chainin (m23) [join=by dspconn];
+	\end{scope}
+ 
+	\begin{scope}[start chain]
+		\chainin (m25);
+		\chainin (m45) [join=by dspflow];
+		\chainin (m44) [join=by dspconn];
+		\chainin (m43) [join=by dspconn];
+	\end{scope}
+ 
+	\begin{scope}[start chain]
+		\chainin (m45);
+		\chainin (m55) [join=by dspflow];
+		\chainin (m65) [join=by dspflow];
+		\chainin (m64) [join=by dspconn];
+		\chainin (m63) [join=by dspconn];
+	\end{scope}
+ 
+	\begin{scope}[start chain]
+		\chainin (m65);
+		\chainin (m85) [join=by dspline];
+		\chainin (m84) [join=by dspconn];
+		\chainin (m83) [join=by dspconn];
+	\end{scope}
+ 
+% 	\foreach \i [evaluate = \i as \j using int(\i+1),
+% 	             evaluate = \i as \k using int(\i+2),] in {2,4,6}
+% 	{
+% 		\begin{scope}[start chain]
+% 			\chainin (m0\i);
+% 			\chainin (m0\j) [join=by dspconn];
+% 			\chainin (m0\k) [join=by dspline];
+% 			\chainin (m1\k) [join=by dspconn];
+% 			\chainin (m2\k) [join=by dspconn];
+% 		\end{scope}
+% 		\draw[dspconn] (m2\i) -- (m2\k);
+% 	}
+ 
+% 	\draw[dspflow] (m28) -- (m2X);
+ 
+ 
+\end{tikzpicture}
