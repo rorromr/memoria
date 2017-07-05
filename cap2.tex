@@ -76,6 +76,69 @@ Usualmente, el cálculo de la cinemática inversa involucra la resolución de si
 
 La obtención de modelos exactos de cinemática directa e inversa es tratado de forma extensa en \cite{cole2007} y \cite{predescu2015}.
 
+\section{Controladores PID}
+
+Aunque las nuevas y eficaces teorías y metodologías de diseño de controladores se están desarrollando continuamente en el campo del control automático, los controladores Proporcional Integral Derivativo (PID) son todavía los controladores más ampliamente utilizados en la industria debido a la ventajosa relación costo-beneficio que pueden proporcionar. De hecho, aunque son relativamente simples de usar, son capaces de lograr un desempeño satisfactorio en muchas tareas de control de procesos. De hecho, su larga historia y el \textit{know-how} que se ha desarrollado a lo largo de los años lo ha consolidado como el controlador de retroalimentación estándar \cite{practical_pid}.
+
+Aplicar un controlador PID consiste en aplicar la suma de tres acciones de control: la acción proporcional, la acción integral y la acción derivativa. Estas acciones se describen a continuación.
+
+\subsubsection{Control proporcional}
+En control proporcional la acción de control es proporcional al error actual del sistema, como se muestra en la expresión (\ref{ctrl-kp}).
+
+\begin{equation}\label{ctrl-kp}
+u(t) = K_p e(t) = K_p(r(t)-y(t))
+\end{equation}
+
+Donde $K_p$ es la constante proporcional. El significado es directo, pues implementa la operación de incrementer la variable controlada cuando el error aumenta. La función de transferencia se muestra en la expresión (\ref{ctrls-kp}).
+
+\begin{equation}\label{ctrls-kp}
+C(s) = K_p
+\end{equation}
+
+\subsubsection{Control integral}
+
+La acción interal es proporcional a la integral del error de control, es decir, esta dada por la expresión (\ref{ctrl-int-t}).
+
+\begin{equation}\label{ctrl-int-t}
+u(t)=K_i \int_{0}^{t}e(t)dt 
+\end{equation}
+
+Donde $K_i$ corresponde a la ganancia integral. Esta acción de control considera todos los valores pasados del error de control. La función de transferencia asociada esta dada por la ecuación ()
+\begin{equation}\label{ctrl-int}
+C(s)=K_i\frac{1}{s}
+\end{equation}
+
+La presencia de un polo en origen del plano complejo permite la reducción del error en estado estacionario ante una entrada o perturbación de tipo escalón. En otras palabras, la acción integral permite adaptar el valor de $u(t)$ de tal forma de alcanzar cero error en estado estacionario.
+
+La aplicación conjunta de una acción proporcionar e integral da origen al controlador PI, ampliamente usado para resolver problemas oscilatorios de controladores On Off y error estacionario de controladores proporcionales. Si el control integral esta presente, el fenómeno de \textit{windup} puede ocurrir ante la presencia de saturación de la variable controlada.
+
+\subsubsection{Control derivativo}
+
+Mientras la acción de control proporcional esta basada en el valor actual del error de control y la acción integral esta basada en el los valores pasados del error de control, la acción derivativa esta basada en la predicción de los valores futuros del error de control. Una ley de control derivativa ideal se muestra en la expresión ().
+
+\begin{equation}
+u(t) = K_d \frac{de}{dt}
+\end{equation}
+
+Donde $K_d$ corresponde a la ganancia derivativa. La función de transferencia esta dada por la expresión ().
+\begin{equation}
+C(s) = K_d s
+\end{equation}
+
+Consideremos la expansión en serie de Taylor del error de control en $t + T_d$.
+
+\begin{equation}
+e(t + T_d) = e(t) + T_d \frac{de}{dt}
+\end{equation}
+
+Si aplicamos la ley de control proporcional a esta expresión se obtiene:
+
+\begin{equation}
+u(t) = K_p \left( e(t) + T_d \frac{de}{dt} \right)
+\end{equation}
+
+Esto corresponde naturalmente a un controlador PD. La variable controlada en $t$ esta también calculada usando una estimación del error de control en $t+T_d$. Por esta razón, se establece que el control derivativo añade elementos de control predictivo. Esto parece tener un gran potencial para mejorar el desempeño, sin embargo, existen algunos problemas en la implementación de este tipo de controladores, en especial las relacionadas con la amplificación del ruido de alta frecuencia.
+
 \section{Motores de corriente continua}
 
 El motor de corriente continua (CC) es la máquina eléctrica empleada en aplicaciones de potencia y tracción. Su sencillo accionamiento y estructura de control han permitido que siga vigente hasta nuestros días, a pesar de ser constructivamente más complejo que los que motores BLDC y requerir mantenimiento. Su velocidad fácilmente controlable y posibilidad de girar en ambos sentidos, lo  que permite aplicaciones de servo accionamientos y tracción.
