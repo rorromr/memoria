@@ -4,7 +4,7 @@
 
 \subsection{Características Scorbot ER VII}
 
-El Scorbot-ER VII es un  manipulador robótico de cinco grados de libertad (5 DOF) diseñado para propósitos educacionales. Posee la configuración estándar de robot industrial antropomórfico (Figura \ref{cap2_scorbot}), ie. \textit{base}, \textit{shoulder} y \textit{elbow}.
+El Scorbot-ER VII es un  manipulador robótica de cinco grados de libertad (5 DOF) diseñado para propósitos educacionales. Posee la configuración estándar de robot industrial antropomórfico (Figura \ref{cap2_scorbot}), ie. \textit{base}, \textit{shoulder} y \textit{elbow}.
 
 \begin{figure}[ht]
   \centering
@@ -138,6 +138,37 @@ u(t) = K_p \left( e(t) + T_d \frac{de}{dt} \right)
 \end{equation}
 
 Esto corresponde naturalmente a un controlador PD. La variable controlada en $t$ esta también calculada usando una estimación del error de control en $t+T_d$. Por esta razón, se establece que el control derivativo añade elementos de control predictivo. Esto parece tener un gran potencial para mejorar el desempeño, sin embargo, existen algunos problemas en la implementación de este tipo de controladores, en especial las relacionadas con la amplificación del ruido de alta frecuencia.
+
+\subsubsection{Discretización de controladores}
+
+En la sección pasada se describió la función de los controladores PID continuos, gran parte de las aplicaciones de control actuales se realizan con ayuda elementos digitales, como microcontroladores o FPGA, por lo que los controladores deben ser llevados al dominio discreto para ser implementados en estas plataformas.
+
+En términos de función de transferencia, buscamos una transformar la expresión en tiempo continuo $G(s)=\frac{B(s)}{A(s)}$ a una de tiempo discreto  $G(z)=\frac{B(z)}{A(z)}$, para lograr esto se debe encontrar la relación $s=f(z)$.
+
+La relación $s=f(z)$ puede obtenerse considerando que para mantener estabilidad todos los polos del sistema deben ser mapeados dentro de la circunferencia unidad, de esta forma se obtiene que la relación (\ref{cap2_zmapping})\cite{oppenheim2009}.
+
+\begin{equation}\label{cap2_zmapping}
+z=e^{s T_s}
+\end{equation}
+
+Considerando una expansión de Taylor de primer orden sobre la expresión (\ref{cap2_zmapping}), se obtiene la expresión (\ref{cap2_tustin}), conocida como método de Tustin o bilineal.
+
+\begin{eqnarray}
+z &=& \frac{e^{s \frac{T_s}{2}}}{e^{-s \frac{T_s}{2}}}\\
+z &\approx& \frac{1+s \frac{T_s}{2}}{1-s \frac{T_s}{2}} \label{cap2_tustin}.
+\end{eqnarray}
+
+De la expresión (\ref{cap2_tustin}) se puede obtener la relación (\ref{cap2_tustin_s}), que a diferencia de (\ref{cap2_zmapping}) relaciona $s$ y $z$ de forma lineal.
+
+CAMBIAR
+\begin{equation}\label{cap2_tustin_s}
+s \approx \frac{1+s \frac{T_s}{2}}{1-s \frac{T_s}{2}}
+\end{equation}
+
+\subsubsection{Implementación de controladores digitales}
+
+Describir metodo TFii
+
 
 \section{Motores de corriente continua}
 
