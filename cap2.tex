@@ -158,17 +158,69 @@ z &=& \frac{e^{s \frac{T_s}{2}}}{e^{-s \frac{T_s}{2}}}\\
 z &\approx& \frac{1+s \frac{T_s}{2}}{1-s \frac{T_s}{2}} \label{cap2_tustin}.
 \end{eqnarray}
 
-De la expresión (\ref{cap2_tustin}) se puede obtener la relación (\ref{cap2_tustin_s}), que a diferencia de (\ref{cap2_zmapping}) relaciona $s$ y $z$ de forma lineal.
+De la expresión (\ref{cap2_tustin}) se puede obtener la relación (\ref{cap2_tustin_s}). Es común encontrar en literatura y documentación de DSP la notación $w=z^{-1}$.
 
-CAMBIAR
+\begin{eqnarray}
+z &=& \frac{e^{s \frac{T_s}{2}}}{e^{-s \frac{T_s}{2}}}\\
+z &\approx& \frac{1+s \frac{T_s}{2}}{1-s \frac{T_s}{2}} \label{cap2_tustin}.
+\end{eqnarray}
+
 \begin{equation}\label{cap2_tustin_s}
-s \approx \frac{1+s \frac{T_s}{2}}{1-s \frac{T_s}{2}}
+s \approx \frac{2}{T_s} \frac{1-z^{-1}}{1+z^{-1}} = \frac{2}{T_s} \frac{1-w}{1+w}
 \end{equation}
 
 \subsubsection{Implementación de controladores digitales}
 
-Describir metodo TFii
+Para describir la implementación de un controlador digital, consideremos un control integral, donde $k_i$ corresponde a la contante integral:
 
+\begin{eqnarray}
+C(s) &=& k_i \frac{1}{s}\\
+C(s)_{s=\frac{2}{T_s} \frac{1-w}{1+w}} &=& \frac{k_i T_s}{2} \frac{1+w}{1-w} \\
+C(w) &=& \frac{  \frac{k_i T_s}{2} w +  \frac{k_i T_s}{2} }{(-1)w+1} 
+\end{eqnarray}
+
+Considerando que un esquema de control realimentado, se tiene que $C(w) = \frac{u(w)}{e(w)}$, donde $u(w)$ corresponde a la salida del controlador y $e(w)$ al error, ambos en dominio discreto.
+
+\begin{eqnarray}
+\frac{u(w)}{e(w)} &=& \frac{  \frac{k_i T_s}{2} w +  \frac{k_i T_s}{2} }{(-1)w+1} \\
+u(w)-u(w)w &=& e(w) \frac{k_i T_s}{2} w +  e(w) \frac{k_i T_s}{2} \label{cap2_eq_diff_w}
+\end{eqnarray}
+
+Aplicando transformada $Z$ inversa sobre la expresión (\ref{cap2_eq_diff_w}) se obtiene la ecuacion de diferencia:
+
+\begin{eqnarray}
+u(n)- u(n-1) &=&  \frac{k_i T_s}{2}(e(n)+e(n-1)) \\
+\Delta u(n) &=& k_i \left( T_s \, \frac{e(n)+e(n-1)}{2} \right) \label{cap2_eq_control_int}
+\end{eqnarray}
+
+De la expresión \ref{cap2_eq_control_int}, muestra que el cambio en la salida del controlador esta dado por la integral del error. Notamos que podemos reescribir la ecuación de diferencia de la siguiente forma:
+
+\begin{eqnarray}
+u(n) &=&  \frac{k_i T_s}{2} e(n) + \alpha(n-1) \\
+\alpha(n) &=& u(n) + \frac{k_i T_s}{2} e(n)
+\end{eqnarray}
+
+Esta representación nos indica que para implementar el controlador deseado solo necesitamos almacenar un estado $\alpha(n)$, pues el corresponde a sistema de primer orden. La implementación en diagrama de bloques se muestra en la Figura \ref{cap2_block_integral}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1.5]{img/cap2/block_pi}
+  \caption{Diagrama de bloques controlador integral.}
+  \label{cap2_block_integral}
+\end{figure}
+
+Esta represetación se denomina forma Directa II versión transpuesta, la cual es óptima con respecto a los elementos de retardo necesarios para la implementación, pues los polos y ceros comparten los elementos de retardo, lo que finalmente se traduce en el uso de una estructua de datos más compacta en el microcotrolador. De forma más general, la función de transferencia $H(w)$ de un filtro digital puede expresarse como muestra la expresión (\ref{cap2_filtro_digital}) y representarse en diagrama de bloques según la Figura (\ref{cap2_td2}).
+
+\begin{equation}
+H(w) = \frac{\sum_{k=0}^{M} b_k \, w^k}{1-\sum_{k=1}^{N} a_k \, w^k}\label{cap2_filtro_digital}
+\end{equation}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=1.2]{img/cap2/tdf2}
+  \caption{Diagrama de bloques para representación Directa II versión transpuesta.}
+  \label{cap2_td2}
+\end{figure}
 
 \section{Motores de corriente continua}
 
