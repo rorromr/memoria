@@ -50,7 +50,14 @@ La familia de microcontroladores XMC4 de Infineon Technologies AG esta especiliz
 
 La configuración de perifiericos en este tipo de microcontroladores suele ser una tarea compleja, dada las distintos \textit{pin out} y configuraciones de cada uno. Afortunadamente, el fabricante provee un IDE llamado Dave (Digital Application Virtual Engineer) que posee herramientas de generación de código a partir de una interfaz gráfica.
 
-Otra carácteristica importante es que la placa de desarrollo escogida de este microcontrolador, la XMC4800 Relax EtherCAT Kit, posee la mayoría de componentes externos necesarios para el uso de las distintas funcionalidades del microcontrolador, como dos Ethernet PHY (transceiver) para la comunicación EtherCAT. Además integra un programador y debugger Segger J-Link que permite establecer \textit{break points} en el código y acceder a distintos registros de microcontrolador en tiempo real.
+Otra carácteristica importante es que la placa de desarrollo escogida de este microcontrolador, la XMC4800 Relax EtherCAT Kit (Figura \ref{cap3_xmc4800}), posee la mayoría de componentes externos necesarios para el uso de las distintas funcionalidades del microcontrolador, como dos Ethernet PHY (transceiver) para la comunicación EtherCAT. Además integra un programador y debugger Segger J-Link que permite establecer \textit{break points} en el código y acceder a distintos registros de microcontrolador en tiempo real.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=.4]{img/cap3/xmc4800}
+  \caption{Placa de desarrollo XMC4800 Relax EtherCAT Kit.}
+  \label{cap3_xmc4800}
+\end{figure}
  
 
 \subsection{Puente H}
@@ -58,7 +65,7 @@ Otra carácteristica importante es que la placa de desarrollo escogida de este m
 Para la etapa de potencia se selecciono un puente H basado en el IC BTN8982TA, el cual corresponde a un \textit{half bridge} de alta corriente para aplicaciones con motores, contiene 
 un MOSFET canal P para el \textit{high-side} y un canal N para el \textit{low-side}, ambos con un driver integrado, que permite su disparo directo desde un microcontrolador.
 
-Para implementación se uso la placa de desarrollo \textit{Motor Control Shield}, que usa dos BTN8982TA en una configuración \textit{full bridge}, las principales carácteristicas:
+Para implementación se uso la placa de desarrollo \textit{Motor Control Shield}, que usa dos BTN8982TA en una configuración \textit{full bridge}, una imagen referencial se muestra  en la Figura \ref{cap2_punteh_infineon}, las principales carácteristicas:
 
 \begin{itemize}
 \item Control bidireccional de motor DC con escobillas de hasta \SI{250}{\watt} continuos.
@@ -66,6 +73,27 @@ Para implementación se uso la placa de desarrollo \textit{Motor Control Shield}
 \item Corriente máxima \SI{30}{\ampere}, restringida por la disipación del PCB (BTN8982TA tiene un limite de \SI{55}{\ampere}).
 \item Frecuencia de conmutación hasta \SI{30}{\kilo\hertz}.
 \end{itemize}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=.35]{img/cap2/puenteh_infineon}
+  \caption{Puente H fabricado por Infineon Technologies AG\textregistered \, basado en BTN8982TA.}
+  \label{cap2_punteh_infineon}
+\end{figure}
+
+\subsection{Sensor de corriente}
+
+Para la etapa de control del motor del motor de corriente continua es necesario contar con un sensor de corriente. Existen deversas tecnologías y tecnicas de medición de corrientes disponibles.
+
+HABLAR SOBRE: SHUNT, HALL
+Problemas de amplificacion, trnasmision sin ruido y aislación
+
+En el desarrollo de este trabajo se consideró el uso de un senso de efecto hall Infineon TLI4970, su principal caracteristica corresponde a la integración del ADC dentro del mismo package, por lo que la salida del sensor es digital usando el protocolo SPI. Esto reduce la cantidad de elementos externos necesarios, pues el sensor se conecta de forma directa al un puerto SPI del microcontrolador.
+
+FOTO TLI
+
+DEsventajas: precio, package, rango y ancho de banda
+
 
 \section{Integración de hardware}
 
