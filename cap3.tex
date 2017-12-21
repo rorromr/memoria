@@ -19,9 +19,9 @@ Se consideró que los nuevos controladores fueran capaces de, al menos, tener el
 
 \subsection{Sistema de comunicación}
 
-Dado que cada articulación del robot esta consitituida por los mismos elementos, parece natural replicar el sistema de control en cada una ellas y establecer sistema de control distribuido. De esta forma, cada una de las articulaciones de controla de forma independiente por un hardware dedicado, denominado esclavo (\textit{slave}). Todos los controladores esclavos son conectados usando un bus de datos con dispositivo maestro (\textit{master}) que establese las referencias de cada controlador.
+Dado que cada articulación del robot esta constituida por los mismos elementos, parece natural replicar el sistema de control en cada una ellas y establecer sistema de control distribuido. De esta forma, cada una de las articulaciones de controla de forma independiente por un hardware dedicado, denominado esclavo (\textit{slave}). Todos los controladores esclavos son conectados usando un bus de datos con dispositivo maestro (\textit{master}) que establece las referencias de cada controlador.
 
-Uno factor importante en el control distribuido es el tipo de comunicación usado, los pricipales requerimientos para el bus de campo son:
+Uno factor importante en el control distribuido es el tipo de comunicación usado, los principales requerimientos para el bus de campo son:
 \begin{itemize}
 \item Conexión por topología \textit{daisy chain}
 \item Protocolo abierto
@@ -83,25 +83,26 @@ Para implementación se uso la placa de desarrollo \textit{Motor Control Shield}
 
 \subsection{Sensor de corriente}
 
-Para la etapa de control del motor del motor de corriente continua es necesario contar con un sensor de corriente. Existen deversas tecnologías y tecnicas de medición de corrientes disponibles.
+Para la etapa de control del motor del motor de corriente continua es necesario contar con un sensor de corriente. Existen diversas tecnologías y técnicas de medición de corriente disponibles.
 
-HABLAR SOBRE: SHUNT, HALL
-Problemas de amplificacion, trnasmision sin ruido y aislación
+En el desarrollo de este trabajo se consideró el uso de un sensor de efecto hall Infineon TLI4970, su principal característica corresponde a la integración del ADC, DSP y acondicionamiento de señal se encuentran dentro del mismo \textit{package} \cite{infineonTLI4970}. Esto reduce la cantidad de elementos externos necesarios para realizar la medición de corriente. La Figura \ref{cap3_tli4970}, muestra el diagrama de bloques de los elementos internos del sensor.
 
-En el desarrollo de este trabajo se consideró el uso de un senso de efecto hall Infineon TLI4970, su principal caracteristica corresponde a la integración del ADC dentro del mismo package, por lo que la salida del sensor es digital usando el protocolo SPI. Esto reduce la cantidad de elementos externos necesarios, pues el sensor se conecta de forma directa al un puerto SPI del microcontrolador.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=.45]{img/cap3/tli4970}
+  \caption{Diagrama del sensor de corriente TLI4970.}
+  \label{cap3_tli4970}
+\end{figure}
 
-FOTO TLI
-
-DEsventajas: precio, package, rango y ancho de banda
-
+El sensor tiene un rango máximo \SI{\pm 25}{\ampere} y una resolución de 10 bits. La salida del sensor se obtiene usando el protocolo SPI conectado directamente al microcontrolador.
 
 \section{Integración de hardware}
 
-Para reducir el tiempo de desarrollo, se consideró el uso de placas de desarrollo que provee el fabricante. De esta forma se uso kit 
+Con el fin de reducir el tiempo de desarrollo, se consideró el uso de placas de desarrollo que provee el fabricante, de esta forma se usó directo el kit del microcontrolador XMC4800 y el puente H basado en el BTN8982TA. Para lograr una integración de hardware modular se considero el diseño de una PCB que permitira el montaje de los kits y otros componentes usados.
 
 \subsubsection{PCB}
 
-Placa PCB
+El diseño del PCB contempla la interconexión de las placas de desarrollo, el sensor de corriente TLI4970 
 
 
 
