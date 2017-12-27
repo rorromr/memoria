@@ -112,11 +112,14 @@ El sensor tiene un rango máximo \SI{\pm 25}{\ampere} y una resolución de 10 bi
 
 \section{Integración de hardware}
 
-Con el fin de reducir el tiempo de desarrollo, se consideró el uso de placas de desarrollo que provee el fabricante, de esta forma se usaron directamente el kit del microcontrolador XMC4800 y el puente H basado en el BTN8982TA. Para lograr una integración de hardware modular se consideró el diseño de una PCB que permitió el montaje de los kits y otros componentes usados.
+Con el fin de reducir el tiempo de desarrollo, se consideró el uso de placas de desarrollo que provee el fabricante, de esta forma se usaron directamente el kit del microcontrolador XMC4800 y el puente H basado en el BTN8982TA. Para lograr una integración de hardware modular se consideró  el diseño de una PCB que permita el montaje de los kits y otros componentes usados.
 
-\subsubsection{PCB}
-
-El diseño del PCB contempló la interconexión del puente H, el microcontrolador y el sensor de corriente TLI4970. Así se consideró la alimentación de todos estos dispositivos junto con el ajuste de nivel de voltaje para los elementos lógicos, como switches y encoders.
+El diseño del PCB contempló la interconexión del puente H, el microcontrolador y el sensor de corriente TLI4970. La PCB debe considerar los siguientes aspectos:
+\begin{itemize}
+\item Entregar la alimentación necesaria a cada dispositivo, esto el voltage y una capacidad de corriente adecuada.
+\item Ajuste de nivel de voltaje para los elementos lógicos, como switches y encoders.
+\item Uso de conectores de potencia y control adecuados para la aplicación.
+\end{itemize}
 
 
 
