@@ -26,20 +26,34 @@ Uno factor importante en el control distribuido es el tipo de comunicación usad
 \item Conexión por topología \textit{daisy chain}
 \item Protocolo abierto
 \item Rápida transmisión de datos y bajo \textit{jitter} 
-\item Minimizar el uso de hardware especializado
+\item Minimizar el uso de hardware y software especializado
 \end{itemize}
 
-Dados estos creiterios, según \cite{liu2015} el bus de campo EtherCAT el indicado para el diseño de controladores modulares para articulaciones, pues es corresponde a un bus de campo rápido, capaz de alzanr tasas de hasta \SI{100}{Mbit/s} y posee mecanismos de sincronización con una exactitud cercana a los \SI{25}{\nano\second}.
+Dados estos criterios, según \cite{liu2015} el bus de campo EtherCAT el indicado para el diseño de controladores modulares para articulaciones, pues es corresponde a un bus de campo rápido, capaz de alzanr tasas de hasta \SI{100}{Mbit/s} usando la misma capa física de Ethernet (100BASE-TX), y posee mecanismos de sincronización con una exactitud cercana a los \SI{25}{\nano\second}.
 
-\subsubsection{Uso de librerías de Ethercat}
+\subsubsection{Software de Ethercat}
 
-SOEM
-Flanders Mechatronics Technology Centre has decided to release their EtherCAT PR2
-Ig gmbh
+Uno de los componentes importantes en el sistema de comunicación corresponde al software encargado de esta tarea, dado que EtherCAT es un protocolo abierto, existen implementaciones de código abierto tanto para maestro, como para el dispositivo esclavo.
+
+Dado que se desea una implementación en sistemas GNU/Linux, el software que hace de controlador de maestro, debe ser compatible con esta plataforma. Así se encuentran disponibles las siguientes implementaciones:
+
+\begin{itemize}
+\item Flanders Mechatronics Technology Centre (FMTC), centro de investigación dedicado a la transferencia tecnológica entre la academia y la industria, liberó su librería para el desarrollo de dispositivos maestros EtherCAT. Esta implementación es usada como base para el sistema de control del robot PR2 de Willow Garage.
+\item SOEM (Simple Open Source EtherCAT Master) nace como una iniciativa que busca un implementación minimalista y embebida. Es usada como para el soporte de dispositivos EtherCAT del framework Orocos.
+\item EtherLab de Ig Gmbh, corresponde a un \textit{toolkit} para acelerar el desarrollo de dispositivos de control con MATLAB Simulink y EtherCAT.
+\end{itemize}
+
+Por el lado del software base para el desarrollo de dispositivos esclavos se encuentra:
+
+\begin{itemize}
+\item EtherCAT Slave Stack Code (SSC) es un código base entregado directamente por Beckhoff, esta escrito en ANSI C y posee utilidades para la generación de código. Tiene una estructura modular y corresponde al estándar usado para la implementación de dispositivos esclavos. Si bien el código es gratuito, para obtenerlo se debe registrar como miembro de la  EtherCAT Technology Group.
+\item SOES (Simple Open Source EtherCAT Slave) Es la contraparte de la librería SOEM, nuevamente busca ser implementación minimalista y embebida. Su desarrollo está activo con el fin de soportar más plataformas y funcionalidades avanzadas del protocolo.
+\end{itemize}
+
 
 \subsection{Microcontrolador}
 
-La familia de microcontroladores XMC4 de Infineon Technologies AG esta especilizada para tareas de control de motores y comunicación industrial, por lo que integran hardware especifico para realizar esta tareas. De esta forma, el microcontrolador escogido corresponde al XMC4800, microcontrolador con núcleo ARM Cortex M4 con unidad de punto flotante, incorpora una serie de perifericos útiles utiles para el desarrollo de sistema de control, \textit{timers} de alta resolución para generación de PWM, interfaz para lectura de encoders (POSIF) y módulo comunicación EtherCAT integrado. La Figura \ref{cap3_xmc4800_data} muestra los distintos módulos que posee el XMC4800.
+La familia de microcontroladores XMC4 de Infineon Technologies AG esta especilizada para tareas de control de motores y comunicación industrial, por lo que integran hardware especifico para realizar esta tareas. De esta forma, el microcontrolador escogido corresponde al XMC4800, microcontrolador con núcleo ARM Cortex M4 con unidad de punto flotante, incorpora una serie de periféricos útiles utiles para el desarrollo de sistema de control, \textit{timers} de alta resolución para generación de PWM, interfaz para lectura de encoders (POSIF) y módulo comunicación EtherCAT integrado. La Figura \ref{cap3_xmc4800_data} muestra los distintos módulos que posee el XMC4800.
 
 \begin{figure}[ht]
   \centering
@@ -98,11 +112,11 @@ El sensor tiene un rango máximo \SI{\pm 25}{\ampere} y una resolución de 10 bi
 
 \section{Integración de hardware}
 
-Con el fin de reducir el tiempo de desarrollo, se consideró el uso de placas de desarrollo que provee el fabricante, de esta forma se usaron directamente el kit del microcontrolador XMC4800 y el puente H basado en el BTN8982TA. Para lograr una integración de hardware modular se considero el diseño de una PCB que permitira el montaje de los kits y otros componentes usados.
+Con el fin de reducir el tiempo de desarrollo, se consideró el uso de placas de desarrollo que provee el fabricante, de esta forma se usaron directamente el kit del microcontrolador XMC4800 y el puente H basado en el BTN8982TA. Para lograr una integración de hardware modular se consideró el diseño de una PCB que permitió el montaje de los kits y otros componentes usados.
 
 \subsubsection{PCB}
 
-El diseño del PCB contempla la interconexión del puente H, el microcontrolador y el sensor de corriente TLI4970. Debe contemplar la alimentación de todos estos dispositivos junto con el ajuste de nivel de voltaje para los elementos lógicos.
+El diseño del PCB contempló la interconexión del puente H, el microcontrolador y el sensor de corriente TLI4970. Así se consideró la alimentación de todos estos dispositivos junto con el ajuste de nivel de voltaje para los elementos lógicos, como switches y encoders.
 
 
 
