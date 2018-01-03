@@ -30,7 +30,26 @@ Conexión
 
 \subsection{Uso de librerías de Ethercat}
 
-SOEM
-Flanders Mechatronics Technology Centre has decided to release their EtherCAT PR2
-Ig gmbh
+\section{Software}
+
+\subsection{ROS}
+
+Como se monstró en el capitulo pasado, su utilizó ROS como framework para realizar la integración. Los dispositivos de hardware, el robot Scorbot y el dispotivo háptico Phantom, cuentan con su \textit{nodo driver} que permiten la integración con el ecosistema ROS.
+
+Se entiende por \textit{nodo driver}, a una aplicación que actua como puente entre un dispositivo fisico y su representación en ROS, permitiendo interactuar de forma transparente con el dispositivo mediante el uso tópicos y servicios. Usualmente el \textit{nodo driver} hace uso de librerías proveidas por el fabricante o terceros para el manejo protocolos especificos del dispositivo. Las siguientes aplicaciones sirven cumplen esta función:
+
+\begin{itemize}
+\item \textit{urg\_node}: es utilizado para la comunicación con sensores de rango Hokuyo.
+\end{itemize}
+
+\subsubsection{Integración del robot Scorbot}
+
+La integración principal con el robot Scorbot se realiza en el nodo \texttt{scorbot\_driver}, el cual recibe los comandos de posición del robot y publica el estado de los \textit{joints} del robot.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{img/cap4/scorbot_software.pdf}
+  \caption{Diagrama de nodos y tópicos de la aplicación.}
+  \label{cap4_scorbot_software}
+\end{figure}
 
