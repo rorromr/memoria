@@ -28,7 +28,6 @@ Placa PCB
 
 Conexión
 
-\subsection{Uso de librerías de Ethercat}
 
 \section{Software}
 
@@ -36,10 +35,12 @@ Conexión
 
 Como se monstró en el capitulo pasado, su utilizó ROS como framework para realizar la integración. Los dispositivos de hardware, el robot Scorbot y el dispotivo háptico Phantom, cuentan con su \textit{nodo driver} que permiten la integración con el ecosistema ROS.
 
-Se entiende por \textit{nodo driver}, a una aplicación que actua como puente entre un dispositivo fisico y su representación en ROS, permitiendo interactuar de forma transparente con el dispositivo mediante el uso tópicos y servicios. Usualmente el \textit{nodo driver} hace uso de librerías proveidas por el fabricante o terceros para el manejo protocolos especificos del dispositivo. Las siguientes aplicaciones sirven cumplen esta función:
+Se entiende por \textit{nodo driver} o ROS \textit{wrapper}, a una aplicación que actua como puente entre un dispositivo fisico y su representación en ROS, permitiendo interactuar de forma transparente con el dispositivo mediante el uso tópicos y servicios. Usualmente el \textit{nodo driver} hace uso de librerías proveidas por el fabricante o terceros para el manejo protocolos especificos del dispositivo. Por ejemplo, las siguientes aplicaciones cumplen esta función:
 
 \begin{itemize}
-\item \textit{urg\_node}: es utilizado para la comunicación con sensores de rango Hokuyo.
+\item \textit{urg\_node}: es un nodo utilizado para la comunicación con sensores de rango Hokuyo.
+\item \textit{ROSARIA}: corresponde a una aplicación construido usando la librería ARIA de MobileRobots, permite el control de robots móviles como Pioneer 3-DX y 3-AT.
+\item \textit{kinova-ros}\cite{kinova}: Es el driver oficial ofrecido por Kinova robotics para el uso de los robot manipuladores Jaco y Mico.
 \end{itemize}
 
 \subsubsection{Integración del robot Scorbot}
