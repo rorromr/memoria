@@ -38,14 +38,16 @@ Como se monstró en el capitulo pasado, su utilizó ROS como framework para real
 Se entiende por \textit{nodo driver} o ROS \textit{wrapper}, a una aplicación que actua como puente entre un dispositivo fisico y su representación en ROS, permitiendo interactuar de forma transparente con el dispositivo mediante el uso tópicos y servicios. Usualmente el \textit{nodo driver} hace uso de librerías proveidas por el fabricante o terceros para el manejo protocolos especificos del dispositivo. Por ejemplo, las siguientes aplicaciones cumplen esta función:
 
 \begin{itemize}
-\item \textit{urg\_node}: es un nodo utilizado para la comunicación con sensores de rango Hokuyo.
-\item \textit{ROSARIA}: corresponde a una aplicación construido usando la librería ARIA de MobileRobots, permite el control de robots móviles como Pioneer 3-DX y 3-AT.
+
+\item \textit{ROSARIA}\cite{rosaria}: corresponde a una aplicación construido usando la librería \textit{Adept MobileRobots Robotics Interface for Applications} (ARIA), permite el control de robots móviles de las compañias Adept MobileRobots, MobileRobots Inc., y ActivMedia, por ejemplo el Pioneer 3-DX y 3-AT.
+
 \item \textit{kinova-ros}\cite{kinova}: Es el driver oficial ofrecido por Kinova robotics para el uso de los robot manipuladores Jaco y Mico.
+
 \end{itemize}
 
 \subsubsection{Integración del robot Scorbot}
 
-La integración principal con el robot Scorbot se realiza en el nodo \texttt{scorbot\_driver}, el cual recibe los comandos de posición del robot y publica el estado de los \textit{joints} del robot.
+En esta sección se describirá la función de cada uno de los nodos que integran el software desarrollado para el control del robot Scorbot.
 
 \begin{figure}[ht]
   \centering
@@ -53,4 +55,15 @@ La integración principal con el robot Scorbot se realiza en el nodo \texttt{sco
   \caption{Diagrama de nodos y tópicos de la aplicación.}
   \label{cap4_scorbot_software}
 \end{figure}
+
+\begin{description}
+
+\item[\texttt{scorbot\_driver}] Corresponde al \textit{nodo driver} se integra con la librería SOEM \cite{soem} para la comunicación EtherCAT.
+
+\end{description}
+
+
+La integración principal con el robot Scorbot se realiza en el nodo 
+
+
 
