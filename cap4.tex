@@ -58,12 +58,44 @@ En esta sección se describirá la función de cada uno de los nodos que integra
 
 \begin{description}
 
-\item[\texttt{scorbot\_driver}] Corresponde al \textit{nodo driver} se integra con la librería SOEM \cite{soem} para la comunicación EtherCAT.
+\item[\texttt{scorbot\_driver}] Corresponde al \textit{nodo driver} se integra con la librería SOEM \cite{soem} para la comunicación EtherCAT. Dado que este nodo ejecuta un ciclo de control, se consideraron una serie de requerimientos, muchos de ellos básicos para software de ejecución en tiempo real:
+
+\begin{itemize}
+\item Separación de hilos de ejecución, todas las tareas realacionadas con actualización de datos en el bus de control se realiza en un hilo independiente (\textit{control thread}) a las comunicaciones con el framework ROS (ROS \textit{thread}).
+\item La comunicación entre el  \textit{control thread} y el ROS \textit{thread} se realiza usando estructuras de datos no bloqueantes.
+\item La memoria utilizada por el hilo de control queda fija luego de la inicialización, de esta forma no se hacen llamados al sistema para pedir o liberar memoria.
+\end{itemize}
+
+SOEM mapea en memoria los dispositivos, es decir, desde el la aplicación master se tiene acceso a un buffer de memoria que permite leer y escribir en los dispositivos esclavos. Para obtener los datos manipulables, se debe usar la misma estructura de datos que usa el dispositivo esclavo para representar la información. \texttt{setpoint\_t} es la estructura usada como referenca (\textit{set point}), miestras que \texttt{joint\_data\_t} es la información del estado del controlador. Estas estructuras estan contenidas en un archivo de cabezera generado por el SSC, su modificación debe realizarse de forma cuidadosa, pues se pueden obtener errores de representación.
+
+\begin{lstlisting}[language=C, caption=Estructuras de datos usadas para mapear datos de dispositivos esclavos]
+typedef struct PACKED {
+    uint16_t controlRegA;
+    uint16_t controlRegB;
+    int16_t  currentRef;
+    int16_t currentLim;
+    uint16_t pidCurrentKp;
+    uint16_t pidCurrentKi;
+    uint16_t pidCurrentKd;
+} setpoint_t;
+
+typedef struct PACKED {
+    int16_t encPosition;
+    int16_t encSpeed;
+    int16_t current;
+    uint16_t limits;
+} joint_data_t;
+\end{lstlisting}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{img/cap4/scorbot_driver.pdf}
+  \caption{Diagrama del nodo \texttt{scorbot\_driver}.}
+  \label{cap4_scorbot_driver}
+\end{figure}
 
 \end{description}
 
-
-La integración principal con el robot Scorbot se realiza en el nodo 
 
 
 
