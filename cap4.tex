@@ -66,9 +66,9 @@ En esta sección se describirá la función de cada uno de los nodos que integra
 \item La memoria utilizada por el hilo de control queda fija luego de la inicialización, de esta forma no se hacen llamados al sistema para pedir o liberar memoria.
 \end{itemize}
 
-SOEM mapea en memoria los dispositivos, es decir, desde el la aplicación master se tiene acceso a un buffer de memoria que permite leer y escribir en los dispositivos esclavos. Para obtener los datos manipulables, se debe usar la misma estructura de datos que usa el dispositivo esclavo para representar la información. \texttt{setpoint\_t} es la estructura usada como referenca (\textit{set point}), miestras que \texttt{joint\_data\_t} es la información del estado del controlador. Estas estructuras estan contenidas en un archivo de cabezera generado por el SSC, su modificación debe realizarse de forma cuidadosa, pues se pueden obtener errores de representación.
+SOEM mapea en memoria los dispositivos, es decir, desde el la aplicación master se tiene acceso a un buffer de memoria que permite leer y escribir en los dispositivos esclavos. Para obtener los datos manipulables, se debe usar la misma estructura de datos que usa el dispositivo esclavo para representar la información. \texttt{setpoint\_t} es la estructura usada como referenca (\textit{set point}), miestras que \texttt{joint\_data\_t} es la información del estado del controlador. Estas estructuras estan contenidas en un archivo de cabezera generado por el SSC, su modificación debe realizarse de forma cuidadosa, pues se pueden obtener errores de representación. El Código fuente \ref{cap4_estructuras} muestra la composición de ambas estructuras, notar el uso de la instrucción \texttt{PACKED}, que indica al compilador no añadir bytes entre los elementos de la estructura, de esta forma todos los elementos estan contiguos en memoria.
 
-\begin{lstlisting}[language=C, caption=Estructuras de datos usadas para mapear datos de dispositivos esclavos]
+\begin{lstlisting}[language=C,style=csstyle, caption=Estructuras de datos usadas para mapear datos de dispositivos esclavos, label=cap4_estructuras]
 typedef struct PACKED {
     uint16_t controlRegA;
     uint16_t controlRegB;
@@ -87,12 +87,18 @@ typedef struct PACKED {
 } joint_data_t;
 \end{lstlisting}
 
+Luego de realizar el mapeo en memoria, se creó la clase \texttt{ScorbotJointDriver}, encargada de representar cada controlador. Posee metodos para modificar la referencia y obtener el estado del controlador. Todos los controladores se agrupan en la clase \texttt{ScorbotHardwareInterface}, la cual abstrae las funciones del robót manipulador, como enviar una referencia a todas las articulaciones y detener todos los controladores. Es también encargada de ejecutar el ciclo de actualización de todos los controladores, este ciclo se ejecuta a \SI{1}{\kilo\hertz}.
+
+ROS posee el paquete \texttt{ros\_control}, cuya función es facilitar la integración de dispositivos de control en ROS. De esta forma la clase \texttt{ScorbotHardwareInterface} hereda de \texttt{hardware\_interface::RobotHW} permitiendo la integración con \texttt{ros\_control}. El principal elemento utilizado de \texttt{ros\_control} correponde al \texttt{cotroller\_manager} una clase encargada de la comunicación entre \texttt{hardware\_interface::RobotHW} y tópicos ROS usando estructuras no bloqueantes en un hilo de ejecución independiente.
+
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{img/cap4/scorbot_driver.pdf}
   \caption{Diagrama del nodo \texttt{scorbot\_driver}.}
   \label{cap4_scorbot_driver}
 \end{figure}
+
+La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Notar que el \texttt{controller\_manager} publica el tópico \texttt{driver\_joint\_states} de tipo \texttt{sensor\_msgs/JointState[]} que contiene la información sobre el estado de cada articulación: posición, velocidad, aceleración y tiempo. Mientras que se suscribe al tópico \texttt{command} de tipo \texttt{std\_msgs/Float64[]} para obtener la referencia enviada a los controladores.
 
 \end{description}
 

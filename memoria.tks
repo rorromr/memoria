@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <TexmakerSession quickmode="3">
+    <document hasfocus="true" master="false" line="100" bookmark1="0" bookmark2="0" file="/home/rodrigo/repos/memoria/cap4.tex" bookmark3="0"/>
+    <document hasfocus="false" master="true" line="38" bookmark1="0" bookmark2="0" file="repos/memoria/memoria.tex" bookmark3="0"/>
     <document hasfocus="false" master="false" line="0" bookmark1="0" bookmark2="0" file="/home/rodrigo/repos/memoria/cap3.tex" bookmark3="0"/>
-    <document hasfocus="false" master="true" line="0" bookmark1="0" bookmark2="0" file="repos/memoria/memoria.tex" bookmark3="0"/>
-    <document hasfocus="true" master="false" line="145" bookmark1="0" bookmark2="0" file="/home/rodrigo/repos/memoria/cap2.tex" bookmark3="0"/>
+    <document hasfocus="false" master="false" line="145" bookmark1="0" bookmark2="0" file="/home/rodrigo/repos/memoria/cap2.tex" bookmark3="0"/>
 </TexmakerSession>
