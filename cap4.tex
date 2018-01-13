@@ -100,8 +100,34 @@ ROS posee el paquete \texttt{ros\_control}, cuya función es facilitar la integr
 
 La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Notar que el \texttt{controller\_manager} publica el tópico \texttt{driver\_joint\_states} de tipo \texttt{sensor\_msgs/JointState[]} que contiene la información sobre el estado de cada articulación: posición, velocidad, aceleración y tiempo. Mientras que se suscribe al tópico \texttt{command} de tipo \texttt{std\_msgs/Float64[]} para obtener la referencia enviada a los controladores.
 
+\item[\texttt{joint\_state\_publisher}] Corresponde a un nodo estándar de ROS, cuya función es obtener los estados de las articulaciones de distintas fuentes (tópicos) y publicarlos de forma conjunta, completando el estado de todas las articulaciones dependiendo de la descripción del robot (URDF).
+
+\item[\texttt{robot\_state\_publisher}] Corresponde a un nodo estándar de ROS, es el encargado de tomar la información de las articulaciones del robot y publicar el árbol de transformadas de cada uno de los enlaces del robot basado en la descripción del robot (URDF), es decir, ejecuta la cinemática directa del robot. Esta información de las transformadas es publicada en el tópico \texttt{/tf}.
+
 \end{description}
 
 
+\subsubsection{Integración de la interfaz Phantom Omni}
+
+En esta sección se describirá la integración del dispositivo Phantom Omni en ROS. En este caso se hace uso del paquete \textit{phantom\_omni}, que contiene el ROS wrapper y URDF. La integración del Phantom Omni en ROS es similar a la realizada con el robot Scorbot, pues cuenta con el  ROS wrapper y los nodos \texttt{robot\_state\_publisher} y  \texttt{joint\_state\_publisher}, que cumplen la misma función descrita anteriormente, salvo que actúan sobre el estado del Phantom Omni.
+
+\texttt{phantom\_driver} Corresponde al \textit{nodo driver} se integra con la librería OpenHaptics para la comunicación con dispositivo Phantom Omni a través de FireWire. Provee los siguientes tópicos:
+
+\begin{itemize}
+\item \texttt{joint\_states}: Información sobre el estado de las articulaciones usando el mensaje \\ \texttt{sensor\_msgs/JointState[]}.
+
+\item \texttt{button}: Información sobre el estado de los botones del stylus del Phantom Omni, usando el mensaje \texttt{omni\_msgs/OmniButtonEvent}.
+
+\item \texttt{force\_feedback}: El nodo se suscribe a éste tópico, al publicar en él el dispositivo aplica un par sobre las articulaciones actuadas.
+\end{itemize}
 
 
+\subsubsection{Teleoperación}
+
+\texttt{scorbot\_teleop}
+
+\subsubsection{Visualización}
+
+\texttt{rviz}
+
+\texttt{scorbot\_shadow}
