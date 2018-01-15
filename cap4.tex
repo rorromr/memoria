@@ -147,16 +147,33 @@ El nodo \texttt{scorbot\_teleop} no controla directamente al robot Scorbot, si n
   \label{cap4_scorbot_teleop}
 \end{figure}
 
-La Figura \ref{cap4_scorbot_teleop} muestra funcinamiento interno del nodo \texttt{scorbot\_teleop}, el mapeo entre el Phantom y el Scorbot \textit{shadow} se realiza de forma continua con propósitos de visualización. La retroalimentación hápica es calculada a partir de la differencia en la posición del Scorbot \textit{shadow} y el robot real, dado que ambos dispositivos tienen una morfología similar y poseen el mismo número de grados de libertad, el cálculo se realiza usando la posición de las articulaciones, como se indica en la ecuación .
+La Figura \ref{cap4_scorbot_teleop} muestra funcinamiento interno del nodo \texttt{scorbot\_teleop}, el mapeo entre el Phantom y el Scorbot \textit{shadow} se realiza de forma continua con propósitos de visualización. La retroalimentación hápica es calculada a partir de la differencia en la posición del Scorbot \textit{shadow} y el robot real, dado que ambos dispositivos tienen una morfología similar y poseen el mismo número de grados de libertad, el cálculo se realiza la ley de Hooke \cite{handbook}, donde la posición corresponde a la posición de las articulaciones, como se indica en la Ecuación \ref{cap4_hooke}.
 
-\begin{equation}
+\begin{equation}\label{cap4_hooke}
 F_i = K_i({X_{shadow}}_i - {X_{scorbot}}_i) \, \mbox{con } i \in {1,2,3}
 \end{equation}
 
-Notamos que el cálculo solo considera en las primeras tres articulaciones, pues el Phantom Omni solo posee estar articulaciones actuadas.
+Donde $K_i > 0 \, \mbox{con } i \in {1,2,3}$. Notamos que el cálculo solo considera en las primeras tres articulaciones, pues el Phantom Omni solo posee tres articulaciones actuadas. En el Scorbot, las últimas dos articulaciones se encuentran cercanas al efector y definen su orientación, por lo que son las tres primeras articulaciones las que tinen el rol principal en definir la posición del efector.
 
 \subsubsection{Visualización}
+
+
 
 \texttt{rviz}
 
 \texttt{scorbot\_shadow}
+
+
+\subsubsection{Modelo URDF}
+
+El modelo \textit{Unified Robot Description Format} (URDF) es un formato basado en XML (\textit{Extensible Markup Language}), corresponde al estandar para la representación de robots en el framework ROS. Para crear 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap4/cad_solidworks.PNG}
+  \caption{Modelo del robot Scorbot en SolidWorks.}
+  \label{cap4_scorbot_cad}
+\end{figure}
+
+
+
