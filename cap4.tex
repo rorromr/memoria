@@ -98,7 +98,17 @@ ROS posee el paquete \texttt{ros\_control}, cuya función es facilitar la integr
   \label{cap4_scorbot_driver}
 \end{figure}
 
-La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Notar que el \texttt{controller\_manager} publica el tópico \texttt{driver\_joint\_states} de tipo \texttt{sensor\_msgs/JointState[]} que contiene la información sobre el estado de cada articulación: posición, velocidad, aceleración y tiempo. Mientras que se suscribe al tópico \texttt{command} de tipo \texttt{std\_msgs/Float64[]} para obtener la referencia enviada a los controladores.
+La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Como se ha mensionado anteriormente, es el \texttt{controller\_manager} quien se encarga de la comunicación con ROS, usando distintos tópicos:
+
+\begin{itemize}
+
+\item \texttt{driver\_joint\_states}: Contiene la información sobre el estado de cada articulación: posición, velocidad, aceleración y tiempo. Usa el mensaje  \texttt{sensor\_msgs/JointState[]}.
+
+\item  \texttt{command}: Se usa para obtener la referencia de posición que será enviada a los controladores, se usa el mensaje \texttt{std\_msgs/Float64[]}.
+ 
+\end{itemize}
+
+
 
 \item[\texttt{joint\_state\_publisher}] Corresponde a un nodo estándar de ROS, cuya función es obtener los estados de las articulaciones de distintas fuentes (tópicos) y publicarlos de forma conjunta, completando el estado de todas las articulaciones dependiendo de la descripción del robot (URDF).
 
@@ -109,7 +119,7 @@ La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorb
 
 \subsubsection{Integración de la interfaz Phantom Omni}
 
-En esta sección se describirá la integración del dispositivo Phantom Omni en ROS. En este caso se hace uso del paquete \textit{phantom\_omni}, que contiene el ROS wrapper y URDF. La integración del Phantom Omni en ROS es similar a la realizada con el robot Scorbot, pues cuenta con el  ROS wrapper y los nodos \texttt{robot\_state\_publisher} y  \texttt{joint\_state\_publisher}, que cumplen la misma función descrita anteriormente, salvo que actúan sobre el estado del Phantom Omni.
+En esta sección se describirá la integración del dispositivo Phantom Omni en ROS. En este caso se hace uso del paquete \textit{phantom\_omni}\cite{phantom_git}, que contiene el ROS wrapper y URDF. La integración del Phantom Omni en ROS es similar a la realizada con el robot Scorbot, pues cuenta con el  ROS wrapper y los nodos \texttt{robot\_state\_publisher} y  \texttt{joint\_state\_publisher}, que cumplen la misma función descrita anteriormente, salvo que actúan sobre el estado del Phantom Omni.
 
 \texttt{phantom\_driver} Corresponde al \textit{nodo driver} se integra con la librería OpenHaptics para la comunicación con dispositivo Phantom Omni a través de FireWire. Provee los siguientes tópicos:
 
@@ -121,10 +131,29 @@ En esta sección se describirá la integración del dispositivo Phantom Omni en 
 \item \texttt{force\_feedback}: El nodo se suscribe a éste tópico, al publicar en él el dispositivo aplica un par sobre las articulaciones actuadas.
 \end{itemize}
 
+Todos los tópicos del \texttt{phantom\_driver} se ejecutan a una frecuencia de \SI{100}{\hertz}, esto asegura que la referencia y retroalimentación hacia el operador sea adecuada, en terminos de retardo.
+
 
 \subsubsection{Teleoperación}
 
-\texttt{scorbot\_teleop}
+La aplicación encargada de la teleoperación debe, básicamente, conectar el robot Scorbot con la interfaz háptica Phantom Omni, por conectar se entiende que la aplicación realiza el mapeo de las articulaciones del Phantom Omni hacia las articulaciones del Scorbot y entrega retroalimentación usando el Phantom Omni. Esta tarea es realizada por el nodo \texttt{scorbot\_teleop}.
+
+El nodo \texttt{scorbot\_teleop} no controla directamente al robot Scorbot, si no que a un robot virtual, denominado Scorbot \textit{shadow}, esta representación almacena la posición deseada para el robot. Uno de los botones del \textit{stylus} del Phantom Omni actúa como gatillo, enviando la referencia es enviada al robot. Si el usuario mantiene el botón presionado, el software enviará de manera continua (\SI{100}{\hertz}) la referencia al robot.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap4/scorbot_teleop.pdf}
+  \caption{Diagrama del nodo \texttt{scorbot\_teleop}.}
+  \label{cap4_scorbot_teleop}
+\end{figure}
+
+La Figura \ref{cap4_scorbot_teleop} muestra funcinamiento interno del nodo \texttt{scorbot\_teleop}, el mapeo entre el Phantom y el Scorbot \textit{shadow} se realiza de forma continua con propósitos de visualización. La retroalimentación hápica es calculada a partir de la differencia en la posición del Scorbot \textit{shadow} y el robot real, dado que ambos dispositivos tienen una morfología similar y poseen el mismo número de grados de libertad, el cálculo se realiza usando la posición de las articulaciones, como se indica en la ecuación .
+
+\begin{equation}
+F_i = K_i({X_{shadow}}_i - {X_{scorbot}}_i) \, \mbox{con } i \in {1,2,3}
+\end{equation}
+
+Notamos que el cálculo solo considera en las primeras tres articulaciones, pues el Phantom Omni solo posee estar articulaciones actuadas.
 
 \subsubsection{Visualización}
 
