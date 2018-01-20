@@ -117,6 +117,30 @@ La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorb
 \end{description}
 
 
+\subsubsection{Modelo URDF}
+
+El \textit{Unified Robot Description Format} (URDF) es un formato basado en XML (\textit{Extensible Markup Language}), corresponde al estandar para la representación de robots en el framework ROS. Este archivo de describe las propiedades cinemáticas y dinámicas del robot, básicamente se especifican las características de los enlaces (\textit{links}) y articulaciones (\textit{joints}).
+
+El formato URDF usa una estructura de arbol para representar los distintos elementos del robot, esto impide la representación de mecanismos cerrados o \textit{loops}, sin embargo la estructura del robot Scorbot corresponde a una simple cadena cinemática. Escribir URDF directamente puede ser una tarea monotona y difícil de depurar, por lo que para crear el URDF del robot Scorot se usó una aproximación gráfica a partir de un modelo CAD.
+
+El modelo CAD se creó usando el software de modelamiento SolidWorks 2014 \textregistered, junto con el \textit{plugin} \texttt{sw\_urdf\_exporter} \cite{sw_urdf}, que permite generar el modelo URDF y archivos STL que representan los \textit{links} del robot. La Figura \ref{cap4_scorbot_cad} muestra el modelo del robot Scorbot en el software CAD en la posición \textit{home}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap4/cad_solidworks.PNG}
+  \caption{Modelo del robot Scorbot en SolidWorks.}
+  \label{cap4_scorbot_cad}
+\end{figure}
+
+Luego de ajustar los puntos de referencia y ejes de cada una de las articulaciones se preocede con exportar el modelo hacia el formato URDF. Una vez exportado, se realizan algunos ajustes manuales al modelo, como corrección de los ángulos limite, posición por defecto y color de los \textit{links}. Con los distintos elementos se contruye el paquete \texttt{scorbot\_description}, que contiene el URDF, archivos STL y utilidades básicas de visualización. La Figura \ref{cap4_scorbot_rviz} muestra el modelo URDF del robot Scorbot en el visualizador \textit{RViz} de ROS.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap4/scorbot_rviz.png}
+  \caption{Modelo del robot Scorbot en \textit{RViz}.}
+  \label{cap4_scorbot_rviz}
+\end{figure}
+
 \subsubsection{Integración de la interfaz Phantom Omni}
 
 En esta sección se describirá la integración del dispositivo Phantom Omni en ROS. En este caso se hace uso del paquete \textit{phantom\_omni}\cite{phantom_git}, que contiene el ROS wrapper y URDF. La integración del Phantom Omni en ROS es similar a la realizada con el robot Scorbot, pues cuenta con el  ROS wrapper y los nodos \texttt{robot\_state\_publisher} y  \texttt{joint\_state\_publisher}, que cumplen la misma función descrita anteriormente, salvo que actúan sobre el estado del Phantom Omni.
@@ -163,17 +187,15 @@ Donde $K_i > 0 \, \mbox{con } i \in {1,2,3}$. Notamos que el cálculo solo consi
 
 \texttt{scorbot\_shadow}
 
-
-\subsubsection{Modelo URDF}
-
-El modelo \textit{Unified Robot Description Format} (URDF) es un formato basado en XML (\textit{Extensible Markup Language}), corresponde al estandar para la representación de robots en el framework ROS. Para crear 
-
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/cap4/cad_solidworks.PNG}
-  \caption{Modelo del robot Scorbot en SolidWorks.}
-  \label{cap4_scorbot_cad}
+  \includegraphics[width=0.6\textwidth]{img/cap4/scorbot_shadow.png}
+  \caption{Applicación con el modelo real y \textit{shadow} en \textit{RViz}.}
+  \label{cap4_scorbot_shadow}
 \end{figure}
+
+
+
 
 
 
