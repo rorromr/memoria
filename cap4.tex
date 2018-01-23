@@ -128,7 +128,7 @@ El modelo CAD se creó usando el software de modelamiento SolidWorks 2014 \textr
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{img/cap4/cad_solidworks.PNG}
-  \caption{Modelo del robot Scorbot en SolidWorks.}
+  \caption{Modelo del robot Scorbot en SolidWorks 2014 \textregistered.}
   \label{cap4_scorbot_cad}
 \end{figure}
 
@@ -171,27 +171,38 @@ El nodo \texttt{scorbot\_teleop} no controla directamente al robot Scorbot, si n
   \label{cap4_scorbot_teleop}
 \end{figure}
 
+La función utilizada para el mapeo entre los \textit{joints} del Phantom Omni y el robot Scorbot sigue la linea planteada en \cite{david}, donde se considera un \textit{workspace} (espacio de trabajo) proporcional. De esta forma, la función lineal presentada en la Ecuación \ref{cap4_scorbot_mapping} realiza el mapeo planteado.
+
+\begin{equation}\label{cap4_scorbot_mapping}
+{\theta_S}_{i} = ({\theta_P}_{i} - {\Theta_{P-}}_{i}) \left(  \frac{{\Theta_{S+}}_{i} - {\Theta_{S-}}_{i}}{{\Theta_{P+}}_{i} - {\Theta_{P-}}_{i}}   \right) + \Theta_{S-}}_{i} + H_i \, \mbox{con } i \in {1, \dots, 5}
+\end{equation}
+
+Donde ${\Theta_{P+}}_i$ y ${\Theta_{P-}}_i$ corresponde a los limites fisicos de la articulación $i$-ésima del Phantom Omni, los limites de las articulaciones del robot Scorbot siguen la misma notación ${\Theta_{S+}}_i$ y ${\Theta_{S-}}_i$, ${\theta_P}_{i}$ es la posición actual de la articulación $i$-ésima del Phantom Omni y ${\theta_S}_{i}$ la del robot Scorbot. Notar que la constante de proporcionalidad corresponde a la relación entre los rangos de movimiento, esto asegura que el robot Scorbot y el Phantom tienen un rango de actuación completo. La constante $H_i$ permite añadir una compensación para que la posición \textit{home} de ambos dispositivos.
+
 La Figura \ref{cap4_scorbot_teleop} muestra funcinamiento interno del nodo \texttt{scorbot\_teleop}, el mapeo entre el Phantom y el Scorbot \textit{shadow} se realiza de forma continua con propósitos de visualización. La retroalimentación hápica es calculada a partir de la differencia en la posición del Scorbot \textit{shadow} y el robot real, dado que ambos dispositivos tienen una morfología similar y poseen el mismo número de grados de libertad, el cálculo se realiza la ley de Hooke \cite{handbook}, donde la posición corresponde a la posición de las articulaciones, como se indica en la Ecuación \ref{cap4_hooke}.
 
 \begin{equation}\label{cap4_hooke}
-F_i = K_i({X_{shadow}}_i - {X_{scorbot}}_i) \, \mbox{con } i \in {1,2,3}
+F_i = K_i({\theta_{shadow}}_i - {\theta_{scorbot}}_i) \, \mbox{con } i \in {1,2,3}
 \end{equation}
 
-Donde $K_i > 0 \, \mbox{con } i \in {1,2,3}$. Notamos que el cálculo solo considera en las primeras tres articulaciones, pues el Phantom Omni solo posee tres articulaciones actuadas. En el Scorbot, las últimas dos articulaciones se encuentran cercanas al efector y definen su orientación, por lo que son las tres primeras articulaciones las que tinen el rol principal en definir la posición del efector.
+Donde $K_i > 0 \, \mbox{con } i \in {1,2,3}$. Notamos que el cálculo solo considera en las primeras tres articulaciones, pues el Phantom Omni solo posee tres articulaciones actuadas. En el robot Scorbot, las últimas dos articulaciones se encuentran cercanas al efector y definen su orientación, por lo que son las tres primeras articulaciones las que tinen el rol principal en definir la posición del efector.
 
 \subsubsection{Visualización}
 
-
-
-\texttt{rviz}
-
-\texttt{scorbot\_shadow}
+La visualización principal se realizó en el software \texttt{rviz}, ahí se añadió el modelo del robot principal y \texttt{scorbot\_shadow}, que representa la posición de referencia del robot Scorbot. 
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{img/cap4/scorbot_shadow.png}
   \caption{Applicación con el modelo real y \textit{shadow} en \textit{RViz}.}
   \label{cap4_scorbot_shadow}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/cap4/tf.png}
+  \caption{TF.}
+  \label{cap4_tf}
 \end{figure}
 
 
