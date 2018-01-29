@@ -3,9 +3,7 @@
 
 \section{Controladores}
 
-El controlador digital presentado en la sección \ref{cap3_controladores} se implementó en lenguaje C usando la transformada directa II.
 
-%https://www.keil.com/pack/doc/CMSIS/DSP/html/group__BiquadCascadeDF2T.html
 
 
 \subsection{Microcontrolador}
@@ -30,6 +28,40 @@ Conexión
 
 
 \section{Software}
+
+En esta sección se describirá el software desarrollado, esta compuesto por dos grandes módulos: software embebido que se ejecuta en el microcontrolador (\textit{firmware}) y el conjunto de programas que se ejecutan desde el computador usando el framework ROS.
+
+\subsection{Firmware}
+
+El firmware corresponde al software que se ejecuta en el microcontrolador, su principal tarea es la ejecución del ciclo de control. El Firmware se implementó en lenguaje C, haciendo uso de librerías del fabricante para la configuración y control de perifericos. La Figura \ref{cap4_scorbot_firmware} muestra de forma gráfica los distintos elementos del \textit{firmware}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img/cap4/scorbot_firmware.pdf}
+  \caption{Diagrama de funcionamiento del \textit{firmware}.}
+  \label{cap4_scorbot_firmware}
+\end{figure}
+
+
+\subsubsection{Inicialización}
+
+Corresponde a la primer bloque de código ejecutado, aquí se configuran todos los periferios utilizados, por ejemplo: configuración de I/O, frecuencia y modo del módulo SPI, frecuencia y resolución del timer de la unidad de PWM.
+
+\subsubsection{\textit{Homing}}
+
+Así se denomina a la determinación de la posición inicial de cada articulación del robot Scorbot (\textit{home position}). Dado que el robot Scorbot solo cuenta con encoders incrementales, el procedimiento de \textit{homing} debe realizarce cada vez que se inicie el robot.
+
+El robot cuenta con interruptores que permiten determinar la posición central de cada articulación, lamentablemente debido al estado del robot, estos interruptores se encuentran en mal estado, por lo que se decidio considerar la posición fisica del robot como posición \textit{home} al iniciar el robot. Esto se traduce en que el operador debe posicionar el robot en la posición \textit{home} al momento de encender el robot.
+
+\subsubsection{EtherCAT mailbox}
+
+El protocolo EtherCAT a nivel de \textit{firmware} usa el patrón \textit{mailbox}, de esta forma el ciclo de control obtiene una estructura de datos actualizada en cada iteración y escribe en otra estructura de datos el estado del sistema al final del ciclo. Es tarea del EtherCAT SSC que estas estructuras de datos se mantengan actualizadas y esten disponibles para el dispositivo maestro.
+ 
+\subsubsection{Controladores}
+
+El controlador digital presentado en la sección \ref{cap3_controladores} se implementó en lenguaje C usando la transformada directa II.
+
+%https://www.keil.com/pack/doc/CMSIS/DSP/html/group__BiquadCascadeDF2T.html
 
 \subsection{ROS}
 
@@ -158,7 +190,7 @@ En esta sección se describirá la integración del dispositivo Phantom Omni en 
 Todos los tópicos del \texttt{phantom\_driver} se ejecutan a una frecuencia de \SI{100}{\hertz}, esto asegura que la referencia y retroalimentación hacia el operador sea adecuada, en terminos de retardo.
 
 
-\subsubsection{Teleoperación}
+\subsubsection{Teleoperación}\label{cap4_teleoperacion}
 
 La aplicación encargada de la teleoperación debe, básicamente, conectar el robot Scorbot con la interfaz háptica Phantom Omni, por conectar se entiende que la aplicación realiza el mapeo de las articulaciones del Phantom Omni hacia las articulaciones del Scorbot y entrega retroalimentación usando el Phantom Omni. Esta tarea es realizada por el nodo \texttt{scorbot\_teleop}.
 
@@ -174,7 +206,7 @@ El nodo \texttt{scorbot\_teleop} no controla directamente al robot Scorbot, si n
 La función utilizada para el mapeo entre los \textit{joints} del Phantom Omni y el robot Scorbot sigue la linea planteada en \cite{david}, donde se considera un \textit{workspace} (espacio de trabajo) proporcional. De esta forma, la función lineal presentada en la Ecuación \ref{cap4_scorbot_mapping} realiza el mapeo planteado.
 
 \begin{equation}\label{cap4_scorbot_mapping}
-{\theta_S}_{i} = ({\theta_P}_{i} - {\Theta_{P-}}_{i}) \left(  \frac{{\Theta_{S+}}_{i} - {\Theta_{S-}}_{i}}{{\Theta_{P+}}_{i} - {\Theta_{P-}}_{i}}   \right) + \Theta_{S-}}_{i} + H_i \, \mbox{con } i \in {1, \dots, 5}
+{\theta_S}_{i} = ({\theta_P}_{i} - {\Theta_{P-}}_{i}) \left(  \frac{{\Theta_{S+}}_{i} - {\Theta_{S-}}_{i}}{{\Theta_{P+}}_{i} - {\Theta_{P-}}_{i}}   \right) + {\Theta_{S-}}_{i} + H_i \, \mbox{con } i \in {1, \dots, 5}
 \end{equation}
 
 Donde ${\Theta_{P+}}_i$ y ${\Theta_{P-}}_i$ corresponde a los limites fisicos de la articulación $i$-ésima del Phantom Omni, los limites de las articulaciones del robot Scorbot siguen la misma notación ${\Theta_{S+}}_i$ y ${\Theta_{S-}}_i$, ${\theta_P}_{i}$ es la posición actual de la articulación $i$-ésima del Phantom Omni y ${\theta_S}_{i}$ la del robot Scorbot. Notar que la constante de proporcionalidad corresponde a la relación entre los rangos de movimiento, esto asegura que el robot Scorbot y el Phantom tienen un rango de actuación completo. La constante $H_i$ permite añadir una compensación para que la posición \textit{home} de ambos dispositivos.
@@ -189,7 +221,7 @@ Donde $K_i > 0 \, \mbox{con } i \in {1,2,3}$. Notamos que el cálculo solo consi
 
 \subsubsection{Visualización}
 
-La visualización principal se realizó en el software \texttt{rviz}, ahí se añadió el modelo del robot principal y \texttt{scorbot\_shadow}, que representa la posición de referencia del robot Scorbot. 
+La visualización principal se realizó en el software \texttt{rviz}, ahí se añadió el modelo del robot principal y \texttt{scorbot\_shadow}, que representa la posición de referencia del robot Scorbot, como se ve en la Figura \ref{cap4_scorbot_shadow}.
 
 \begin{figure}[H]
   \centering
@@ -198,10 +230,12 @@ La visualización principal se realizó en el software \texttt{rviz}, ahí se a�
   \label{cap4_scorbot_shadow}
 \end{figure}
 
+Como se describió en la Sección \ref{cap4_teleoperacion}, el nodo \texttt{scorbot\_teleop} es el nodo encargado de publicar el estado del \texttt{scorbot\_shadow}, por otro lado, \textit{driver} publica el estado del robot Scorbot. Gracias al nodo \texttt{robot\_state\_publisher} se obtiene la \textit{pose} de cada \textit{link} en el espacio, información que es publicada en el tópico \texttt{\textbackslash tf}. La Figura \ref{cap4_tf}, muestra la estructura de las distintas transformadas de coordenas del sistema, para la correcta visualización se ha puesto que ambos robots tengan la misma base. 
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{img/cap4/tf.png}
-  \caption{TF.}
+  \caption{Estructura de transformadas del sistema.}
   \label{cap4_tf}
 \end{figure}
 
