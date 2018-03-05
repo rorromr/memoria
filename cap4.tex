@@ -1,13 +1,14 @@
 \chapter{Implementación}
 
+En este capitulo se presentá la implementación de cada uno de los componentes del sistema, tanto de software como de hardware.
 
 \section{Controladores}
 
-
-
+Una de las decisiones de diseño más importantes fue la de escoger un sistema de control distribuido, de esta forma los controladores son modulares e idénticos entre sí. Básicamente se compone de una unidad de procesamiento, el microcontrolador, y la sección de potencia, compuesta por el puente H.
 
 \subsection{Microcontrolador}
 
+El microcontrolador corresponde al Infineon XMC4700, pues posee un conjunto de periféricos ideal para el tipo de aplicación requerida. Básicamente se utilizó
 
 
 \subsection{Puente H}
@@ -38,7 +39,7 @@ El firmware corresponde al software que se ejecuta en el microcontrolador, su pr
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.6\textwidth]{img/cap4/scorbot_firmware.pdf}
-  \caption{Diagrama de funcionamiento del \textit{firmware}.}
+  \caption{Diagrama de funcionamiento del firmware.}
   \label{cap4_scorbot_firmware}
 \end{figure}
 
