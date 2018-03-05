@@ -6,22 +6,26 @@ En este capitulo se presentá la implementación de cada uno de los componentes 
 
 Una de las decisiones de diseño más importantes fue la de escoger un sistema de control distribuido, de esta forma los controladores son modulares e idénticos entre sí. Básicamente se compone de una unidad de procesamiento, el microcontrolador, y la sección de potencia, compuesta por el puente H.
 
-\subsection{Microcontrolador}
-
-El microcontrolador corresponde al Infineon XMC4700, pues posee un conjunto de periféricos ideal para el tipo de aplicación requerida. Básicamente se utilizó
-
-
-\subsection{Puente H}
-
-Funciones especificas
-
 \section{Integración de hardware}
 
-Esquematico y componentes
+El microcontrolador corresponde al Infineon XMC4800, pues posee un conjunto de periféricos ideal para el tipo de aplicación requerida. Para reducir el tiempo de desarrollo y simplificar la implmentación se usó como elemento base la placa de desarrollo del microcontrolador y puente H, de esta forma se diseñó una placa para el montaje de las placas de desarrollo usando una estructura por pisos (\textit{stackable}).
+
 
 \subsubsection{PCB}
 
-Placa PCB
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{img/cap4/top_pcb}
+  \caption{PCB cara superior (\textit{top}).}
+  \label{cap4_top_pcb}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.45\textwidth]{img/cap4/bottom_pcb}
+  \caption{PCB cara inferior (\textit{bottom}).}
+  \label{cap4_bottom_pcb}
+\end{figure}
 
 \section{Bus de campo}
 
