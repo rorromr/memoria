@@ -14,7 +14,7 @@ El microcontrolador corresponde al Infineon XMC4800, pues posee un conjunto de p
 
 Habiendo escogido un diseño basado en placas de desarrollo, la PCB tiene el papel de integrar eléctrica y mecánicamente los distintos componentes presentados en la Tabla \ref{cap4_componentes_pcb}.
 
-\begin{table}[h]
+\begin{table}[]
 \centering
 \label{cap4_componentes_pcb}
 \begin{tabular}{|l|l|}
@@ -39,7 +39,7 @@ Un hecho importante a la hora del diseño es considerar las limitaciones la máq
 Para ejecutar el diseño se necesario hacer uso de un software CAM especializado en el cual se importan los diseños generados en Eagle\textregistered.  Para soldar el sensor de corriente TLI4970 es necesario emplear una soldadora BGA para soldar el integrado a la PCB, pues los puntos de soldadura (\textit{pads}) se encuentran por debajo del integrado. La Figura \ref{cap4_pcb} muestra la PCB obtenida desde la máquina LPKF\textregistered.
 
 
-\begin{figure}[H]
+\begin{figure}[]
   \centering
   \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=0.9\textwidth]{img/cap4/top_pcb}
@@ -56,7 +56,20 @@ Para ejecutar el diseño se necesario hacer uso de un software CAM especializado
   \label{cap4_pcb}
 \end{figure}
 
-El diseño del PCB es 
+Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación principal del controlador se dispone por un costado, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en el otro extremo. 
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=0.9\textwidth]{img/cap4/top_pcb}
+  \end{subfigure}%
+  ~
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=0.9\textwidth]{img/cap4/bottom_pcb}
+  \end{subfigure}
+  \caption{Controlador completo montado.}
+  \label{cap4_controlador_completo}
+\end{figure}
 
 \section{Bus de campo}
 
