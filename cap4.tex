@@ -14,7 +14,7 @@ El microcontrolador corresponde al Infineon XMC4800, pues posee un conjunto de p
 
 Habiendo escogido un diseño basado en placas de desarrollo, la PCB tiene el papel de integrar eléctrica y mecánicamente los distintos componentes presentados en la Tabla \ref{cap4_componentes_pcb}.
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
 \label{cap4_componentes_pcb}
 \begin{tabular}{|l|l|}
@@ -30,21 +30,33 @@ Otros Elementos pasivos (resistencias y capacitores) & THT                      
 \caption{Componentes del PCB.}
 \end{table}
 
-Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se escoje un diseño usando dos capas.
+Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se escoje un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
 
-\begin{figure}[ht]
+Para el diseño de los circuitos equemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estandar del software, por lo que tuvo que ser diseñado.
+
+Un hecho importante a la hora del diseño es considerar las limitaciones la máquinaria disponible para la construcción, así para la construcción del PCB se cuenta con una máquina de protipado LPKF\textregistered,  cuya principal limitante es que que no realiza vias, así el diseño intenta minizar el uso de vias. Un elemento de diseño escencial en los PCB, corresponde a considerar los flujos de corriente y sus retornos, pues es el parametro principal al momento de considerar el ancho de las pistas y ubicación de componentes, en este sentido todas las pistas encargadas de transportar la corriente hacía el motor son un ancho mayor y todos los componentes asociados, como el sensor de corriente, se encuentran ubicados de forma próxima.
+
+Para ejecutar el diseño se necesario hacer uso de un software CAM especializado en el cual se importan los diseños generados en Eagle\textregistered.  Para soldar el sensor de corriente TLI4970 es necesario emplear una soldadora BGA para soldar el integrado a la PCB, pues los puntos de soldadura (\textit{pads}) se encuentran por debajo del integrado. La Figura \ref{cap4_pcb} muestra la PCB obtenida desde la máquina LPKF\textregistered.
+
+
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.45\textwidth]{img/cap4/top_pcb}
-  \caption{PCB cara superior (\textit{top}).}
-  \label{cap4_top_pcb}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=0.9\textwidth]{img/cap4/top_pcb}
+    \caption{Cara superior (\textit{top}).}
+    \label{cap4_top_pcb}
+  \end{subfigure}%
+  ~
+  \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=0.9\textwidth]{img/cap4/bottom_pcb}
+    \caption{Cara inferior (\textit{bottom}).}
+    \label{cap4_bottom_pcb}
+    \end{subfigure}
+  \caption{PCB fabricada con LPKF\textregistered.}
+  \label{cap4_pcb}
 \end{figure}
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.45\textwidth]{img/cap4/bottom_pcb}
-  \caption{PCB cara inferior (\textit{bottom}).}
-  \label{cap4_bottom_pcb}
-\end{figure}
+El diseño del PCB es 
 
 \section{Bus de campo}
 
