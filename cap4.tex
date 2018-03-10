@@ -6,12 +6,31 @@ En este capitulo se presentá la implementación de cada uno de los componentes 
 
 Una de las decisiones de diseño más importantes fue la de escoger un sistema de control distribuido, de esta forma los controladores son modulares e idénticos entre sí. Básicamente se compone de una unidad de procesamiento, el microcontrolador, y la sección de potencia, compuesta por el puente H.
 
-\section{Integración de hardware}
+\subsection{Integración de hardware}
 
-El microcontrolador corresponde al Infineon XMC4800, pues posee un conjunto de periféricos ideal para el tipo de aplicación requerida. Para reducir el tiempo de desarrollo y simplificar la implmentación se usó como elemento base la placa de desarrollo del microcontrolador y puente H, de esta forma se diseñó una placa para el montaje de las placas de desarrollo usando una estructura por pisos (\textit{stackable}).
-
+El microcontrolador corresponde al Infineon XMC4800, pues posee un conjunto de periféricos ideal para el tipo de aplicación requerida. Para reducir el tiempo de desarrollo y simplificar la implmentación se usó como elemento base la placa de desarrollo del microcontrolador y puente H, de esta forma se diseñó una PCB para el montaje de las placas de desarrollo usando una estructura por pisos (\textit{stackable}).
 
 \subsubsection{PCB}
+
+Habiendo escogido un diseño basado en placas de desarrollo, la PCB tiene el papel de integrar eléctrica y mecánicamente los distintos componentes presentados en la Tabla \ref{cap4_componentes_pcb}.
+
+\begin{table}[H]
+\centering
+\label{cap4_componentes_pcb}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Elemento}                                    & \textbf{Tipo de montaje}            \\ \hline
+Montaje para placa de desarrollo del microcontrolador XMC4800     & THT Pin header \SI{0,1}{\inchQ}     \\ \hline
+MOntaje para puente H basado en BTN8982TA                         & THT Pin header \SI{0,1}{\inchQ}     \\ \hline
+Sensor de corriente TLI4970                          & SMT                                 \\ \hline
+Conector DB9                                         & THT                                 \\ \hline
+Conectores de poder                                  & THT                                 \\ \hline
+Otros Elementos pasivos (resistencias y capacitores) & THT                                 \\ \hline
+\end{tabular}
+\caption{Componentes del PCB.}
+\end{table}
+
+Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se escoje un diseño usando dos capas.
 
 \begin{figure}[ht]
   \centering
