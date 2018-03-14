@@ -39,15 +39,15 @@ Un hecho importante a la hora del diseño es considerar las limitaciones la máq
 Para ejecutar el diseño se necesario hacer uso de un software CAM especializado en el cual se importan los diseños generados en Eagle\textregistered.  Para soldar el sensor de corriente TLI4970 es necesario emplear una soldadora BGA para soldar el integrado a la PCB, pues los puntos de soldadura (\textit{pads}) se encuentran por debajo del integrado. La Figura \ref{cap4_pcb} muestra la PCB obtenida desde la máquina LPKF\textregistered.
 
 
-\begin{figure}[]
+\begin{figure}[H]
   \centering
-  \begin{subfigure}[b]{0.45\textwidth}
+  \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=0.9\textwidth]{img/cap4/top_pcb}
     \caption{Cara superior (\textit{top}).}
     \label{cap4_top_pcb}
   \end{subfigure}%
   ~
-  \begin{subfigure}[b]{0.45\textwidth}
+  \begin{subfigure}[b]{0.35\textwidth}
     \includegraphics[width=0.9\textwidth]{img/cap4/bottom_pcb}
     \caption{Cara inferior (\textit{bottom}).}
     \label{cap4_bottom_pcb}
@@ -56,20 +56,16 @@ Para ejecutar el diseño se necesario hacer uso de un software CAM especializado
   \label{cap4_pcb}
 \end{figure}
 
-Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación principal del controlador se dispone por un costado, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en el otro extremo. 
+Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación del microcontrolador se dispone por un costado, mientras que la alimentación del puente H se encuentra en la parte posterior de la placa, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en un extremo de la placa. 
 
 \begin{figure}[H]
   \centering
-  \begin{subfigure}[b]{0.45\textwidth}
-    \includegraphics[width=0.9\textwidth]{img/cap4/top_pcb}
-  \end{subfigure}%
-  ~
-  \begin{subfigure}[b]{0.45\textwidth}
-    \includegraphics[width=0.9\textwidth]{img/cap4/bottom_pcb}
-  \end{subfigure}
+  \includegraphics[width=0.5\textwidth]{img/cap4/board}
   \caption{Controlador completo montado.}
   \label{cap4_controlador_completo}
 \end{figure}
+
+
 
 \section{Bus de campo}
 
