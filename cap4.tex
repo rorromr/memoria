@@ -111,9 +111,77 @@ El protocolo EtherCAT a nivel de \textit{firmware} usa el patrón \textit{mailbo
  
 \subsubsection{Controladores}
 
-El controlador digital presentado en la sección \ref{cap3_controladores} se implementó en lenguaje C usando la transformada directa II.
+El controlador digital presentado en la sección \ref{cap3_controladores} se implementó en lenguaje C usando la transformada directa II, dado que corresponde a un control lineal, se dividió en dos partes: un controlador PD (proporcional y derivativo) y un controlador I (integral). Así para la implementación del controlador PID solo basta con considerar el controlador PD y el controlador I operando de forma conjunta.
 
-%https://www.keil.com/pack/doc/CMSIS/DSP/html/group__BiquadCascadeDF2T.html
+\begin{description}
+
+\item[PD] El controlador proporcional derivativo se implementó según la función de transferencia mostrada en la Ecuación \ref{cap4_pd}.
+
+\begin{equation}\label{cap4_pd}
+C_{pd}(s)=k_p + k_d \frac{s}{s\tau+1}
+\end{equation}
+
+Donde $k_p$ corresponde a la constante proporcional, $k_d$ a la constante derivativa y $\tau$ corresponde a la constante de tiempo de un filtro pasa bajos que ayuda a reducir la magnitud de la respuesta derivativa ante ruido de alta frecuencia en la señal de error \cite{finn}. Para implementar el controlador usando la transformada directa II es necesesario obtener los coeficientes $a_k$ y $b_k$ mostrados en la Ecuación \ref{cap2_filtro_digital}. Mediante la transformada de Tustin se obtienen los coeficientes mostrados en la Ecuación \ref{cap4_pd_coeff}.
+
+\begin{eqnarray}\label{cap4_pd_coeff}
+a_0 &=& 1\\
+a_1 &=& \frac{T_s-2\tau}{T_s+2\tau}\\
+b_0 &=& \frac{2 k_d+T_s k_p + 2 k_p \tau}{T_s+2\tau}\\
+b_1 &=& -\frac{2 k_d-T_s k_p + 2 k_p \tau}{T_s+2\tau}
+\end{eqnarray}
+
+Donde $T_s$ corresponde al tiempo de muestreo. Dado que corresponde a un sistema de primer order, solo se necesita un elemento de retardo en la implementación digital. El segmento de código muestra el metodo \texttt{PD\_Update} encargado de actualizar el filtro PD con una muestra (estado interno) y entregar el valor de salida.
+
+\begin{lstlisting}[language=C,style=csstyle, caption=Implementación \texttt{PD\_Update}, label=cap4_pd_impl]
+float32_t PD_Update(PD_t * handle, float32_t in)
+{
+  float32_t out;
+  /* y[n] = b0 * x[n] + s[n] */
+  out = handle->b[0] * in + handle->state[0];
+  /* Update internal states s[n+1] */
+  handle->state[0] = handle->b[1] * in - handle->a[1] * out;
+  /* Return PID output */
+  return (out);
+}
+\end{lstlisting}
+
+\item[I] El control integral es necesario para contrarestar el error en estado estacionario, pero sufre de un problema denominado \textit{windup}, esta situación se da cuando la salida del controlador es superior a la capacidad de actuación, produciendo un aumento en el sorepaso. Para evitar este comportamiento se debe dar al controlador información sobre los limites de actuación, la forma más simple se denomina integración condicional, en el cual el controlador integral no sigue integrando la señal de error en caso de superar el limite de actuación. El controlador base se muetra en a Ecuación \ref{cap4_i}.
+
+\begin{equation}\label{cap4_i}
+C_{i}(s)=k_i \frac{1}{s}
+\end{equation}
+
+Donde $k_i$ corresponde a la constante integral, notar que la integración condicional no se puede expresar en forma de función de transferencia, pues es un elemento no lineal. Los coeficientes $a_k$ y $b_k$ son mostrados en la Ecuación \ref{cap4_i_coeff}. La implementación usando transformada directa II se muestra en \ref{cap4_i_impl}, dado que el filtro nuevamente es de un solo orden, solo se requiere un estado.
+
+\begin{eqnarray}\label{cap4_i_coeff}
+a_0 &=& 1\\
+a_1 &=& -1\\
+b_0 &=& \frac{T_s k_i}{2}\\
+b_1 &=& \frac{T_s k_i}{2}
+\end{eqnarray}
+
+\begin{lstlisting}[language=C,style=csstyle, caption=Implementación \texttt{ILim\_Update}, label=cap4_i_impl]
+float32_t ILim_Update(ILim_t * handle, float32_t in)
+{
+  float32_t out;
+  /* y[n] = b0 * x[n] + s[n] */
+  out = handle->b[0] * in + handle->state[0];
+  /* Limit output, conditional integration antiwindup */
+  out = out > handle->lim ?  
+    handle->lim : (out < - handle->lim ? - handle->lim : out);
+  /* Update state */
+  /* s[n+1] = b1 * x[n] - a1 * y[n] */
+  handle->state[0] = handle->b[1] * in + out; // a1 = -1.0f;
+  /* Return I output */
+  return (out);
+}
+\end{lstlisting}
+
+\end{description}
+
+
+
+
 
 \subsection{ROS}
 
