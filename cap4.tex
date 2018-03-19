@@ -177,6 +177,18 @@ float32_t ILim_Update(ILim_t * handle, float32_t in)
 }
 \end{lstlisting}
 
+\item[PID] Finalmente, el controlador PID se implementa usando ambos controladores, PD e I con \textit{antiwindup}. Como se muestra en el Código Fuente \ref{cap4_pid_impl}, la salida es simplemente la suma de ambos controladores. La principal razón de implementarlo de forma serparada corresponde a que es más simple implementar el \textit{antiwindup} cuando se conoce de forma explicita la salida integral, al implementar un PID completo, como sistema de segundo orden, habría que encontrar la acción integral o aplicar metodos \textit{antiwindup} más avanzados como \textit{back calculation} \cite{practical_pid}.
+
+\begin{lstlisting}[language=C,style=csstyle, caption=Implementación \texttt{PIDLim\_Update}, label=cap4_pid_impl]
+float32_t PIDLim_Update(PIDLim_t * handle, float32_t in)
+{
+  float32_t out;
+  out = PD_Update(&handle->pd, in) + 
+    ILim_Update(&handle->ilim, in);
+  return (out);
+}
+\end{lstlisting}
+
 \end{description}
 
 
