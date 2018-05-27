@@ -191,6 +191,18 @@ float32_t PIDLim_Update(PIDLim_t * handle, float32_t in)
 
 \end{description}
 
+\subsubsection{Estimación de velocidad}
+
+El robot Scorbot incorpora encoders incrementales en cada una de las articulaciones, este sensor entrega información posición de forma cuantizada. Durante pruebas realizadas al robot se determinó que la velocidad máxima de los motores es cercana a las 100 RPM.
+
+Grafico de velocidad
+
+En el controlador de velocidad se considero un modelo de identificación en medición de periodo, el cual entrega buenos resultado a bajas velocidades.
+
+Ver emeng2-3
+
+ss
+
 
 
 
