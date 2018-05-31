@@ -193,15 +193,40 @@ float32_t PIDLim_Update(PIDLim_t * handle, float32_t in)
 
 \subsubsection{Estimación de velocidad}
 
-El robot Scorbot incorpora encoders incrementales en cada una de las articulaciones, este sensor entrega información posición de forma cuantizada. Durante pruebas realizadas al robot se determinó que la velocidad máxima de los motores es cercana a las 100 RPM.
+El robot Scorbot incorpora encoders ópticos incrementales en cada una de las articulaciones, el eje del encoder esta conectado a la parte posterior del eje del motor y cuentan con $96$ ciclos por revolución (CPR), valor se denotado por $N_r$. Durante durante cada ciclo del encoder eje existen cuatro eventos de cambio sus salidas, por lo que el ángulo minímo detectable corresponde a $\frac{\Delta\theta}{4}$, donde $\Delta\theta$ se obtiene de la Ecuación \ref{cap4_encoder} y corresponde a la separación angular de las ranuras del disco del encoder.
 
-Grafico de velocidad
+\begin{equation}\label{cap4_encoder}
+\Delta\theta = \frac{2\pi}{N_r}
+\end{equation}
 
-En el controlador de velocidad se considero un modelo de identificación en medición de periodo, el cual entrega buenos resultado a bajas velocidades.
+Durante pruebas de lazo abierto realizadas al robot se determinó que la velocidad máxima de los motores es cercana a las \si{100}{rpm} (ver Figura \ref{cap4_max_velocidad}).
 
-Ver emeng2-3
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.6]{img/cap4/max_velocidad}
+  \caption{Perifil de velocidad angular de la articulación \textit{base}.}
+  \label{cap4_max_velocidad}
+\end{figure}
 
-ss
+En el controlador de velocidad se considero un modelo de identificación basado en medición de periodo \cite{Petrella2007}, el cual entrega buenos resultado a bajas velocidades. La medición se realiza contando el número de periodos de un \textit{timer} de alta frecuencia ($T_{hf}$) dentro de un pulso del encoder. La Ecuación \ref{cap4_estimacion_velocidad} se obtiene bajo la hipotesis que la velocidad angular es contante. La Figura \ref{cap4_diagrama_velocidad_encoder} muestra un diagrama con las señales A y B encuadratura del encoder y los periodos del \textit{timer}.
+
+\begin{equation}\label{cap4_estimacion_velocidad}
+\omega = \frac{d\theta}{dt} \cong \frac{\Delta\theta}{n\,T_{hf}} =  \frac{2\pi}{N_r\,n\,T_{hf}}
+\end{equation}
+
+La velocidad puede ser estimada en cada ciclo de pulsos del encoder, esto puede traer complicaciones al considerar velocidades muy bajas, pues puede ser más lento que el lazo de control de velocidad. La tasa de actualización de la velocidad esta dadá por la Ecuación \ref{cap4_ts_velocidad}, si el lazo de velocidad se ejecuta a \SI{1}{\kilo\hertz}, la velocidad miníma para garantizar que el lazo de velocidad obtiene una nueva muestra en cada ciclo es de \SI{625}{\rpm}, si se consideran los elementos reductores (\textit{harmonic drive} y poleas), la velocidad de las miníma de las articulaciones será de \SI{1.3}{\rpm}, para reducir este número se puede reducir la frecuencia del lazo de velocidad o usar encoders con un mayor CPR.
+
+\begin{equation}\label{cap4_ts_velocidad}
+T_\omega = \frac{2\pi}{N_r\,\omega}
+\end{equation}
+
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.6]{img/cap4/diagrama_velocidad_encoder}
+  \caption{Perifil de velocidad angular de la articulación \textit{base}.}
+  \label{cap4_diagrama_velocidad_encoder}
+\end{figure}
 
 
 
