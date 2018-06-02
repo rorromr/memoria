@@ -214,7 +214,7 @@ En el controlador de velocidad se considero un modelo de identificación basado 
 \omega = \frac{d\theta}{dt} \cong \frac{\Delta\theta}{n\,T_{hf}} =  \frac{2\pi}{N_r\,n\,T_{hf}}
 \end{equation}
 
-La velocidad puede ser estimada en cada ciclo de pulsos del encoder, esto puede traer complicaciones al considerar velocidades muy bajas, pues puede ser más lento que el lazo de control de velocidad. La tasa de actualización de la velocidad esta dadá por la Ecuación \ref{cap4_ts_velocidad}, si el lazo de velocidad se ejecuta a \SI{1}{\kilo\hertz}, la velocidad miníma para garantizar que el lazo de velocidad obtiene una nueva muestra en cada ciclo es de \SI{625}{\rpm}, si se consideran los elementos reductores (\textit{harmonic drive} y poleas), la velocidad de las miníma de las articulaciones será de \SI{1.3}{\rpm}, para reducir este número se puede reducir la frecuencia del lazo de velocidad o usar encoders con un mayor CPR.
+La velocidad puede ser estimada en cada ciclo de pulsos del encoder, donde la tasa de actualización de la velocidad esta dadá por la Ecuación \ref{cap4_ts_velocidad}, esto puede traer complicaciones al considerar velocidades muy bajas, pues puede ser más lento que el lazo de control de velocidad.
 
 \begin{equation}\label{cap4_ts_velocidad}
 T_\omega = \frac{2\pi}{N_r\,\omega}
@@ -372,7 +372,7 @@ El nodo \texttt{scorbot\_teleop} no controla directamente al robot Scorbot, si n
   \label{cap4_scorbot_teleop}
 \end{figure}
 
-La función utilizada para el mapeo entre los \textit{joints} del Phantom Omni y el robot Scorbot sigue la linea planteada en \cite{david}, donde se considera un \textit{workspace} (espacio de trabajo) proporcional. De esta forma, la función lineal presentada en la Ecuación \ref{cap4_scorbot_mapping} realiza el mapeo planteado.
+La función utilizada para el mapeo entre los \textit{joints} del Phantom Omni y el robot Scorbot esta basada en \cite{david}, donde se considera un \textit{workspace} (espacio de trabajo) proporcional. De esta forma, la función lineal presentada en la Ecuación \ref{cap4_scorbot_mapping} realiza el mapeo planteado.
 
 \begin{equation}\label{cap4_scorbot_mapping}
 {\theta_S}_{i} = ({\theta_P}_{i} - {\Theta_{P-}}_{i}) \left(  \frac{{\Theta_{S+}}_{i} - {\Theta_{S-}}_{i}}{{\Theta_{P+}}_{i} - {\Theta_{P-}}_{i}}   \right) + {\Theta_{S-}}_{i} + H_i \, \mbox{con } i \in {1, \dots, 5}
