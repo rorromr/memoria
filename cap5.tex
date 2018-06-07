@@ -4,9 +4,86 @@ En este capitulo se presentan los distintos resultados de este trabajo de memori
 
 \section{Control de articulaciones}
 
+\subsection{Control de corriente}
+
+El lazo de corriente corresponde al \textit{loop} de control más anidado en la estructura de control distribuido propuesta, por esta razón es la que mayor ancho de banda (rápido) debe presentar.
+
+Respuesta al escalón
+indice de desempeños
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/cap5/step_corriente.pdf}
+  \caption{Respuesta del controlador de corriente a un escalón.}
+  \label{cap5_step_corriente}
+\end{figure}
+
+Seguimiento de referencia de alta amplitud
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/cap5/corriente_cambio_referencia_alto.pdf}
+  \caption{Respuesta del controlador de corriente a un escalón.}
+  \label{cap5_corriente_cambio_referencia_alto}
+\end{figure}
 
 
-\section{Mapeo de articulaciones}
+Seguimiento de referencia de baja amplitud
+aumento del ruido por resolución del sensor
+seguimiento OK
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/cap5/corriente_cambio_referencia_bajo.pdf}
+  \caption{Respuesta del controlador de corriente a un escalón.}
+  \label{cap5_corriente_cambio_referencia_bajo}
+\end{figure}
+
+
+
+
+Cambio dinamico
+pruebas realizadas con rotor bloqueado
+movimiento induce que no se pueda alcanzar la corriente por falta de carga, antiwindup debe actuar
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/cap5/cambio_dinamico_corriente.pdf}
+  \caption{Respuesta del controlador de corriente a un escalón.}
+  \label{cap5_cambio_dinamico_corriente}
+\end{figure}
+
+
+\subsection{Control de velocidad}
+
+\subsection{Control de posición}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/cap5/ref_basica}
+  \caption{Respuesta del controlador de corriente a un escalón.}
+  \label{cap5_ref_basica}
+\end{figure}
+
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/cap5/ref_retardo_vel}
+  \caption{Respuesta del controlador de corriente a un escalón.}
+  \label{cap5_ref_retardo_vel}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap5/ref_corriente_limitada}
+  \caption{Respuesta del controlador de corriente a un escalón.}
+  \label{cap5_ref_corriente_limitada}
+\end{figure}
+
+\section{Control mediante Phantom Omni}
+
+\subsection{Mapeo de articulaciones}
 
 \begin{figure}[H]
   \centering
@@ -34,27 +111,23 @@ En este capitulo se presentan los distintos resultados de este trabajo de memori
 \end{figure}
 
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.5\textwidth]{img/cap5/tracking}
-  \caption{Seguimiento de posición.}
-  \label{cap5_pos_tracking}
-\end{figure}
+\subsection{Feedback haptico}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{img/cap5/force_feedback}
+  \includegraphics[width=0.5\textwidth]{img/cap5/feedback_basico}
   \caption{Algoritmo de fuerza.}
-  \label{cap5_force_feedback}
+  \label{cap5_feedback_basico}
 \end{figure}
-
 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{img/cap5/force_tracking}
+  \includegraphics[width=0.5\textwidth]{img/cap5/feedback_velocidad}
   \caption{Seguimiento de trayectoria con aplicación de fuerza.}
   \label{cap4_force_tracking}
 \end{figure}
+
+
 
 
