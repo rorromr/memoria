@@ -96,14 +96,16 @@ Todos los controladores estan conectados siguiendo la mismo orden fisíco de la 
 
 \subsubsection{Montaje}
 
+Considerando que todos los controladores deben estar conectados de forma estable para para realizar pruebas, se configuró un montaje para disponer de todos los controladores de forma ordenada y alineada, se tomó como base el diagrama mostrado en la Figura \ref{cap4_montaje}. 
+
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{img/cap4/montaje}
-  \caption{Montaje de controladores.}
+  \includegraphics[width=0.8\textwidth]{img/cap4/scorbot_montaje}
+  \caption{Esquema de montaje de controladores.}
   \label{cap4_diagrama_montaje}
 \end{figure}
 
-De esta forma se configuró un montaje para disponer de todos los controladores de forma alineada, esta configuración se muestra en la Figura \ref{cap4_montaje}. 
+Para la alimentación de \SI{5}{\volt} se ha usado una fuente conmutada de \SI{5}{\ampere}, así mismo se uso una fuente conmutada de \SI{12}{\volt} de  \SI{30}{\ampere} para la alimentación de los puente H. Ambas fuentes tienen como entrada \SI{220}{VAC} y son activadas por el interruptor principal. Además se ha instalado un interruptor de emergencia que corta la alimentación de \SI{12}{\volt}, permitiendo dejar inactivo el movimiento del robot en caso de algún movimiento inesperado.
 
 \begin{figure}[H]
   \centering
@@ -112,8 +114,16 @@ De esta forma se configuró un montaje para disponer de todos los controladores 
   \label{cap4_montaje}
 \end{figure}
 
-Para la alimentación de \SI{5}{\volt} se ha usado una fuente conmutada de \SI{5}{\ampere}, así mismo se uso una fuente conmutada de \SI{12}{\volt} de  \SI{30}{\ampere} para la alimentación de los puente H. Ambas fuentes tienen como entrada \SI{220}{VAC} y son activadas por el interruptor principal. Además se ha instalado un interruptor de emergencía que interrumpe la alimentación de \SI{12}{\volt}, permitiendo dejar inactivo el móvimiento del robot en caso de algún movimiento inesperado.
+Los conectores DB9 desde el robot Scorbot se han fijado a los controladores usando los propios tornillos del conector DB9, se han usado una serie de bridas para mantener fijo el cable principal hacia el robot Scorbot. Con este montaje se obtiene una seria de ventajas, la primera de ellas es que solo se exponen dos conectores hacia los dispositivos externos: alimentación de la red y conexión Ethernet hacia el EtherCAT master; y solo se cuenta con un botón de encendido que alimenta a todos los controladores.
 
+La Figura \ref{cap4_completo} muestra el robot Scorbot conectado al montaje realizado con los controladores.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap4/scorbot_completo}
+  \caption{Robot Scorbot conectado a los controladores.}
+  \label{cap4_completo}
+\end{figure}
 
 \section{Software}
 
