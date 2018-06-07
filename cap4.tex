@@ -80,11 +80,30 @@ Terminal motor Scorbot   & I/O           & DB9                    & Según \cite
   \label{cap4_controlador_completo}
 \end{figure}
 
-\section{Montaje}
+\subsection{Conexión en \textit{daisy chain}}
 
-El bus de campo EtherCAT se conecta con una topología \textit{daisy chain} usando cables de par trenzado con conectores RJ45. Dado que EtherCAT usa la capa física y de enlace de datos de Ethernet, se puede emplear el mismo cableado usado para redes de computación.
+El bus de campo EtherCAT se conecta con una topología \textit{daisy chain} usando cables de par trenzado con conectores RJ45. Dado que EtherCAT usa la capa física y de enlace de datos de Ethernet, se puede emplear el mismo cableado usado para redes de computación. De esta forma los controladores se conectan en serie como se muestra en la Figura \ref{cap4_diagrama_daisy_chain}, procurando conectar el puerto EtherCAT In con el puerto EtherCAT Out del controlador contiguo. 
 
-De esta forma se configuró un montaje para disponer de todos los controladores de forma alineada, esta configuración se muestra en la Figura \ref{cap4_montaje}. Todos los controladores estan conectados siguiendo la mismo orden fisíco de la cadena cinemática del robot.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{img/cap4/scorbot_hardware}
+  \caption{Diagrama de conexión \textit{daisy chain}.}
+  \label{cap4_diagrama_daisy_chain}
+\end{figure}
+
+Todos los controladores estan conectados siguiendo la mismo orden fisíco de la cadena cinemática del robot. Así el primer controlador corresponde al de la articulación base y la entrada EtherCAT In del controlador se debe conectar a la interfaz de red del computador que actua como máster.
+
+
+\subsubsection{Montaje}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap4/montaje}
+  \caption{Montaje de controladores.}
+  \label{cap4_diagrama_montaje}
+\end{figure}
+
+De esta forma se configuró un montaje para disponer de todos los controladores de forma alineada, esta configuración se muestra en la Figura \ref{cap4_montaje}. 
 
 \begin{figure}[H]
   \centering
