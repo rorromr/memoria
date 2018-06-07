@@ -56,7 +56,22 @@ Para ejecutar el diseño se necesario hacer uso de un software CAM especializado
   \label{cap4_pcb}
 \end{figure}
 
-Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación del microcontrolador se dispone por un costado, mientras que la alimentación del puente H se encuentra en la parte posterior de la placa, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en un extremo de la placa. 
+Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación del microcontrolador se dispone por un costado, mientras que la alimentación del puente H se encuentra en la parte posterior de la placa, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en un extremo de la placa. Notar que la salida de la placa del puente H se realiza mediente un conector banana, por lo que es necesario un cableado entre las placas. La Tabla \ref{cap4_especificaciones} muestra las especificaciones eléctricas del módulo de control.
+
+\begin{table}[]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Conexión}        & \textbf{Tipo} & \textbf{Tipo conector} & \textbf{Especificaciones eléctricas} \\ \hline
+Alimentación puente H    & I             & Banana                 & \SI{12}{\volt} \SI{5}{\ampere}                       \\ \hline
+Alimentación electrónica & I             & Pin header \SI{0.1}{\inchQ}           & \SI{5}{\volt} \SI{500}{\milli\ampere} \\ \hline
+EtherCAT In              & I/O           & RJ45                   & Ethernet CAT 5                        \\ \hline
+EtherCAT Out             & I/O           & RJ45                   & Ethernet CAT 5                        \\ \hline
+Terminal motor Scorbot   & I/O           & DB9                    & Según \cite{scorbot1998}        \\ \hline
+\end{tabular}
+\caption{Especificaciones electricas del módulo de control}
+\label{cap4_especificaciones}
+\end{table}
 
 \begin{figure}[H]
   \centering
@@ -65,19 +80,21 @@ Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Fig
   \label{cap4_controlador_completo}
 \end{figure}
 
-\section{Bus de campo}
+\section{Montaje}
 
-El bus de campo EtherCAT se conecta con una topología \textit{Daisy chain} usando cables de par trenzado con conectores RJ45. Dado que EtherCAT usa la capa física y de enlace de datos de Ethernet, se puede emplear el mismo cableado usado para redes de computación.
+El bus de campo EtherCAT se conecta con una topología \textit{daisy chain} usando cables de par trenzado con conectores RJ45. Dado que EtherCAT usa la capa física y de enlace de datos de Ethernet, se puede emplear el mismo cableado usado para redes de computación.
 
-De esta forma se configuró un montaje para disponer de todos los controladores de forma alineada, esta configuración se muestra en la Figura \ref{cap4_montaje}
-
+De esta forma se configuró un montaje para disponer de todos los controladores de forma alineada, esta configuración se muestra en la Figura \ref{cap4_montaje}. Todos los controladores estan conectados siguiendo la mismo orden fisíco de la cadena cinemática del robot.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{img/cap4/board}
+  \includegraphics[width=0.8\textwidth]{img/cap4/montaje}
   \caption{Montaje de controladores.}
   \label{cap4_montaje}
 \end{figure}
+
+Para la alimentación de \SI{5}{\volt} se ha usado una fuente conmutada de \SI{5}{\ampere}, así mismo se uso una fuente conmutada de \SI{12}{\volt} de  \SI{30}{\ampere} para la alimentación de los puente H. Ambas fuentes tienen como entrada \SI{220}{VAC} y son activadas por el interruptor principal. Además se ha instalado un interruptor de emergencía que interrumpe la alimentación de \SI{12}{\volt}, permitiendo dejar inactivo el móvimiento del robot en caso de algún movimiento inesperado.
+
 
 \section{Software}
 
