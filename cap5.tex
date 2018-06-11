@@ -1,17 +1,19 @@
 \chapter{Resultados}
 
-En este capitulo se presentan los distintos resultados de este trabajo de memoria.
+En este capitulo se presentan los distintos resultados de este trabajo de memoria, se presentan en un orden lógico, partiendo controladores de bajo nivel, que se ejecutan el microcontrolador; y luego, el software de control que se ejecuta en el computador.
 
 \section{Control de articulaciones}
 
 \subsection{Control de corriente}
 
-El lazo de corriente corresponde al \textit{loop} de control más anidado en la estructura de control distribuido propuesta, por esta razón es la que mayor ancho de banda (rápido) debe presentar.
+El lazo de corriente corresponde al \textit{loop} de control más anidado en la estructura de control distribuido propuesta, por esta razón es la que mayor ancho de banda debe presentar (más rápido). Las pruebas de control de corriente se realizaron con el rotor bloqueado, los resultados presentatos corresponden a los obtenidos en la articulación \textit{Base}.
+
+La Figura \ref{cap5_step_corriente} muestra la respuesta del controlador de corriente ante una entrada de tipo escalón de \SI{3}{\ampere}.
 
 Respuesta al escalón
 indice de desempeños
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{img/cap5/step_corriente.pdf}
   \caption{Respuesta del controlador de corriente a un escalón.}
@@ -20,7 +22,7 @@ indice de desempeños
 
 Seguimiento de referencia de alta amplitud
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{img/cap5/corriente_cambio_referencia_alto.pdf}
   \caption{Respuesta del controlador de corriente a un escalón.}
@@ -32,7 +34,7 @@ Seguimiento de referencia de baja amplitud
 aumento del ruido por resolución del sensor
 seguimiento OK
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{img/cap5/corriente_cambio_referencia_bajo.pdf}
   \caption{Respuesta del controlador de corriente a un escalón.}
