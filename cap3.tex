@@ -110,6 +110,56 @@ En el desarrollo de este trabajo se consideró el uso de un sensor de efecto hal
 
 El sensor tiene un rango máximo \SI{\pm 25}{\ampere} y una resolución de 10 bits. La salida del sensor se obtiene usando el protocolo SPI conectado directamente al microcontrolador.
 
+\subsection{Estimación de velocidad}
+
+El robot Scorbot cuenta con \textit{encoders} en cada uno de los motores que accionan sus articulaciones.
+
+Estimación esta sujeta a errores de cuantización
+
+Para lograr mejores resultados es conventiente usar un estimador de velocidad, el cual realiza seguimiento de la velocidad considerando la medidas obtenidas del encoder sin utilizar una diferenciación de forma explicita. Consideremos un estimador de velocidad basado en un \textit{loop} PI, donde las estimaciones de la posición $\hat{x}$ y velocidad $\hat{v}$ estan dadas por:
+
+\begin{eqnarray}
+\hat{x} &=& \frac{1}{s} \hat{v} \\
+\hat{v} &=& \left( \frac{k_i}{s} + k_p \right) (x-\hat{x})
+\end{eqnarray}
+
+Luego de una manipulación algebraica se puede obtener la siguiente expresión para $\hat{x}$.
+
+\begin{equation}
+\hat{x} = \frac{1+s\frac{k_p}{k_i}}{1+s\frac{k_p}{k_i}+s^2\frac{1}{k_i}}x
+\end{equation}
+
+A partir de expresión anterior podemos expresar el error de estimación:
+
+\begin{eqnarray}
+\tilde{x} &=& x - \hat{x} \\
+\tilde{x} &=& x \left(1 -  \frac{1+s\frac{k_p}{k_i}}{1+s\frac{k_p}{k_i}+s^2\frac{1}{k_i}} \right) \\
+\tilde{x} &=& x \left(\frac{s^2 \frac{1}{k_i}}{1+s\frac{k_p}{k_i}+s^2\frac{1}{k_i}}\right)
+\end{eqnarray}
+
+De la última expresión, usando el teorema del valor final, podemos obtener que la estimación tendrá cero error en estacionario para entradas de tipo escalón y rampa. La dinámica del estimador esta dado por los polos $p_i$ de la función de tranferencia, para este caso consideremos un ancho de banda deseado $B$ y un coeficiente de amotiguamiento $\zeta=1$ (criticamente amortiguado). De esta forma la ecuación carácteristica esta dada por:
+
+\begin{equation}
+p_i = -\frac{k_p}{2} \pm \sqrt{k_p^2-4k_i}
+\end{equation}
+
+La restricción de amortiguamiento critico hace que los polos sean reales y únicos, por que se obtiene:
+
+\begin{eqnarray}
+k_p &=& 2 B \\
+k_i &=& \frac{kp^2}{4}
+\end{eqnarray}
+
+La Figura \ref{cap3_estimador_vel} muestra el diagrama de bloques del estimador de velocidad. Notar que la función de transferencia corresponde a un sistema lineal, por lo que puede en un microcontrolador usando los metodos de discretización descritos anteriormente.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/cap3/estimador}
+  \caption{\textit{Tracking loop} para estimación de velocidad.}
+  \label{cap3_estimador_vel}
+\end{figure}
+
+
 \section{Integración de hardware}
 
 Con el fin de reducir el tiempo de desarrollo, se consideró el uso de placas de desarrollo que provee el fabricante, de esta forma se usaron directamente el kit del microcontrolador XMC4800 y el puente H basado en el BTN8982TA. Para lograr una integración de hardware modular se consideró  el diseño de una PCB que permita el montaje de los kits y otros componentes usados.
