@@ -245,7 +245,7 @@ El robot Scorbot incorpora encoders ópticos incrementales en cada una de las ar
 \Delta\theta = \frac{2\pi}{N_r}
 \end{equation}
 
-Durante pruebas de lazo abierto realizadas al robot se determinó que la velocidad máxima de los motores es cercana a las \si{100}{rpm} (ver Figura \ref{cap4_max_velocidad}).
+Durante pruebas de lazo abierto realizadas al robot se determinó que la velocidad máxima de los motores es cercana a las \si{4600}{rpm} (ver Figura \ref{cap4_max_velocidad}). La velocidad se estimó usando el diferenciación discreta (método de Euler) sobre los datos de posición.
 
 \begin{figure}[ht]
   \centering
@@ -254,29 +254,30 @@ Durante pruebas de lazo abierto realizadas al robot se determinó que la velocid
   \label{cap4_max_velocidad}
 \end{figure}
 
-En el controlador de velocidad se considero un modelo de identificación basado en medición de periodo \cite{Petrella2007}, el cual entrega buenos resultado a bajas velocidades. La medición se realiza contando el número de periodos de un \textit{timer} de alta frecuencia ($T_{hf}$) dentro de un pulso del encoder. La Ecuación \ref{cap4_estimacion_velocidad} se obtiene bajo la hipotesis que la velocidad angular es contante. La Figura \ref{cap4_diagrama_velocidad_encoder} muestra un diagrama con las señales A y B encuadratura del encoder y los periodos del \textit{timer}.
+Uno de los problemas con estimar la velocidad usando el deferenciación discreta corresponde al alto nivel de ruido y error en la estimación a bajas velocidades. Por estos motivos se considero el estimador presentado en la sección . Usando este estimador se evita una diferenciación discreta directa sobre los datos, pues se realiza sobre el valor estimado de la posición. Además permite un ajuste simple del ancho de banda del observador mediante el ajuste de la constante $k_p$.
 
-\begin{equation}\label{cap4_estimacion_velocidad}
-\omega = \frac{d\theta}{dt} \cong \frac{\Delta\theta}{n\,T_{hf}} =  \frac{2\pi}{N_r\,n\,T_{hf}}
-\end{equation}
+El observador corresponde a un sistema de segundo orden, con dos polos y dos ceros. Al discretizar la expresión observador usando el metodo de Tustin, se obtienen los siguientes coeficientes para su implementación digital:
 
-La velocidad puede ser estimada en cada ciclo de pulsos del encoder, donde la tasa de actualización de la velocidad esta dadá por la Ecuación \ref{cap4_ts_velocidad}, esto puede traer complicaciones al considerar velocidades muy bajas, pues puede ser más lento que el lazo de control de velocidad.
+\begin{eqnarray}
+b_0 &=& \frac{4 k_p + 2 T_s k_i}{2 T_s k_p + T_s^2 k_i + 4} \\
+b_1 &=& -\frac{ 8 k_p}{2 T_s k_p + T_s^2 k_i + 4}\\
+b_2 &=& \frac{4 k_p - 2 T_s k_i}{2 T_s k_p + T_s^2 k_i + 4}
+\end{eqnarray}
 
-\begin{equation}\label{cap4_ts_velocidad}
-T_\omega = \frac{2\pi}{N_r\,\omega}
-\end{equation}
+\begin{eqnarray}
+a_0 &=& 1 \\
+a_1 &=& \frac{ 2 T_s^2 k_i - 8}{2 T_s k_p + T_s^2 k_i + 4}\\
+a_2 &=& \frac{-2 T_s k_p  + T_s^2 k_i + 4}{2 T_s k_p + T_s^2 k_i + 4}
+\end{eqnarray}
 
+La Figura \ref{cap4_est_velocidad} muestra los resultados obteneidos por el estimador de velocidad al considerar un anche de banda para el observador $B = \SI{100}{\hertz}$.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[scale=0.6]{img/cap4/diagrama_velocidad_encoder}
-  \caption{Perifil de velocidad angular de la articulación \textit{base}.}
-  \label{cap4_diagrama_velocidad_encoder}
+  \includegraphics[scale=0.6]{img/cap4/velocidad_estimacion}
+  \caption{Estimación de velocidad es comparada con método de diferenciación.}
+  \label{cap4_est_velocidad}
 \end{figure}
-
-
-
-
 
 \subsection{ROS}
 
