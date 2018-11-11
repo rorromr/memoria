@@ -9,7 +9,7 @@ La versión compilada en PDF puede descargarse desde [aquí](http://latex.aslush
 Se deben instalar los siguiente paquetes para usar la plantilla usando Texmaker (4.1):
 
 ```bash
-sudo apt-get install texlive-full texmaker rubber
+sudo apt-get install rubber texlive-lang-spanish texlive-latex-extra texlive-science texmaker
 ```
 
 Para trabajar con versiones más actualizadas de Latex es recomendable usar este [script](https://github.com/scottkosty/install-tl-ubuntu).
