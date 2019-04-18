@@ -397,13 +397,12 @@ Otro elemento primordial lo constituyen los servicios, estos se definen mediante
 
 \section{Evaluación del sistema}
 
-Para la evaluación del sistema se propone emular el comportamiento de un robot picarocas utilizado en la industria minera, como el que se muestra en la Figura \ref{cap2_picarocas}. Estas máquinas tienen una extensión cercana a los \SI{12}{\meter}, son controladas usando una serie de actuadores lineales hidráulicos y poseen un martillo de impacto como herramienta  en el efector. Son usadas en faenas de minería subterránea para fracturar grandes fragmentos de roca, que luego de reducidos son transportados a hacia otras unidades de molienda.
+Para la evaluación del sistema se propone el uso de una aplicación de teleoperación háptica donde operador podrá:
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[scale=.5]{img/cap2/picarocas}
-  \caption{Picarocas utilizado en industria minera.}
-  \label{cap2_picarocas}
-\end{figure}
+\begin{itemize}
 
-Notamos que su configuración cinemática es similar a la que posee el robot Scorbot ER-VII, pues tiene una base capaz de rotar y la mayoría de sus articulaciones tienen una configuración que permite un movimiento en el plano.
+\item Mover de forma continua el robot manipulador usando la interfaz hápica Phantom Omni \texttrademark.
+\item Obtener \textit{feedback} hápico considerando variables internas del robot, como la posición actual.
+\item Interactuar de forma hápitica con objetos, previamente definidos, en el espacio de trabajo del robot.
+
+\end{itemize}

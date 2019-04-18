@@ -151,6 +151,8 @@ Así se denomina a la determinación de la posición inicial de cada articulaci�
 
 El robot cuenta con interruptores que permiten determinar la posición central de cada articulación, lamentablemente debido al estado del robot, estos interruptores se encuentran en mal estado, por lo que se decidio considerar la posición fisica del robot como posición \textit{home} al iniciar el robot. Esto se traduce en que el operador debe posicionar el robot en la posición \textit{home} al momento de encender el robot.
 
+Para simplificar el proceso anterior se desarrolló en el controlador EtherCAT un perametró que permite añadir un \textit{offset} de calibración en tiempo de ejecución, permitiendo simplificar el proceso de calibración.
+
 \subsubsection{EtherCAT mailbox}
 
 El protocolo EtherCAT a nivel de \textit{firmware} usa el patrón \textit{mailbox}, de esta forma el ciclo de control obtiene una estructura de datos actualizada en cada iteración y escribe en otra estructura de datos el estado del sistema al final del ciclo. Es tarea del EtherCAT SSC que estas estructuras de datos se mantengan actualizadas y esten disponibles para el dispositivo maestro.
