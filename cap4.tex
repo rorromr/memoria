@@ -34,7 +34,7 @@ Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\tex
 
 Para el diseño de los circuitos esquemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estándar del software, por lo que tuvo que ser diseñado.
 
-Un hecho importante a la hora del diseño es considerar las limitaciones la máquinaria disponible para la construcción, así para la construcción del PCB se cuenta con una máquina de prototipado LPKF\textregistered,  cuya principal limitante es que que no realiza vias, así el diseño intenta minimizar el uso de vías. Un elemento de diseño esencial en los PCB, corresponde a considerar los flujos de corriente y sus retornos, pues es el parámetro principal al momento de considerar el ancho de las pistas y ubicación de componentes, en este sentido todas las pistas encargadas de transportar la corriente hacía el motor son un ancho mayor y todos los componentes asociados, como el sensor de corriente, se encuentran ubicados de forma próxima.
+Un hecho importante a la hora del diseño es considerar las limitaciones la maquinaria disponible para la construcción, así para la construcción del PCB se cuenta con una máquina de prototipado LPKF\textregistered,  cuya principal limitante es que que no realiza vías, así el diseño intenta minimizar el uso de vías. Un elemento de diseño esencial en los PCB, corresponde a considerar los flujos de corriente y sus retornos, pues es el parámetro principal al momento de considerar el ancho de las pistas y ubicación de componentes, en este sentido todas las pistas encargadas de transportar la corriente hacía el motor son un ancho mayor y todos los componentes asociados, como el sensor de corriente, se encuentran ubicados de forma próxima.
 
 Para ejecutar el diseño se necesario hacer uso de un software CAM especializado en el cual se importan los diseños generados en Eagle\textregistered.  Para soldar el sensor de corriente TLI4970 es necesario emplear una soldadora BGA para soldar el integrado a la PCB, pues los puntos de soldadura (\textit{pads}) se encuentran por debajo del integrado. La Figura \ref{cap4_pcb} muestra la PCB obtenida desde la máquina LPKF\textregistered.
 
@@ -192,9 +192,6 @@ float32_t PIDLim_Update(PIDLim_t * handle, float32_t in)
 \end{description}
 
 
-
-
-
 \subsection{ROS}
 
 Como se monstró en el capitulo pasado, su utilizó ROS como framework para realizar la integración. Los dispositivos de hardware, el robot Scorbot y el dispotivo háptico Phantom, cuentan con su \textit{nodo driver} que permiten la integración con el ecosistema ROS.
@@ -262,7 +259,7 @@ ROS posee el paquete \texttt{ros\_control}, cuya función es facilitar la integr
   \label{cap4_scorbot_driver}
 \end{figure}
 
-La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Como se ha mensionado anteriormente, es el \texttt{controller\_manager} quien se encarga de la comunicación con ROS, usando distintos tópicos:
+La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Como se ha mencionado anteriormente, es el \texttt{controller\_manager} quien se encarga de la comunicación con ROS, usando distintos tópicos:
 
 \begin{itemize}
 
@@ -283,9 +280,9 @@ La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorb
 
 \subsubsection{Modelo URDF}
 
-El \textit{Unified Robot Description Format} (URDF) es un formato basado en XML (\textit{Extensible Markup Language}), corresponde al estandar para la representación de robots en el framework ROS. Este archivo de describe las propiedades cinemáticas y dinámicas del robot, básicamente se especifican las características de los enlaces (\textit{links}) y articulaciones (\textit{joints}).
+El \textit{Unified Robot Description Format} (URDF) es un formato basado en XML (\textit{Extensible Markup Language}), corresponde al estándar para la representación de robots en el framework ROS. Este archivo de describe las propiedades cinemáticas y dinámicas del robot, básicamente se especifican las características de los enlaces (\textit{links}) y articulaciones (\textit{joints}).
 
-El formato URDF usa una estructura de arbol para representar los distintos elementos del robot, esto impide la representación de mecanismos cerrados o \textit{loops}, sin embargo la estructura del robot Scorbot corresponde a una simple cadena cinemática. Escribir URDF directamente puede ser una tarea monotona y difícil de depurar, por lo que para crear el URDF del robot Scorot se usó una aproximación gráfica a partir de un modelo CAD.
+El formato URDF usa una estructura de arbol para representar los distintos elementos del robot, esto impide la representación de mecanismos cerrados o \textit{loops}, sin embargo la estructura del robot Scorbot corresponde a una simple cadena cinemática. Escribir URDF directamente puede ser una tarea monotona y difícil de depurar, por lo que para crear el URDF del robot Scorbot se usó una aproximación gráfica a partir de un modelo CAD.
 
 El modelo CAD se creó usando el software de modelamiento SolidWorks 2014 \textregistered, junto con el \textit{plugin} \texttt{sw\_urdf\_exporter} \cite{sw_urdf}, que permite generar el modelo URDF y archivos STL que representan los \textit{links} del robot. La Figura \ref{cap4_scorbot_cad} muestra el modelo del robot Scorbot en el software CAD en la posición \textit{home}.
 
@@ -385,9 +382,3 @@ Como se describió en la Sección \ref{cap4_teleoperacion}, el nodo \texttt{scor
   \caption{Estructura de transformadas del sistema.}
   \label{cap4_tf}
 \end{figure}
-
-
-
-
-
-
