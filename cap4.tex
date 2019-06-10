@@ -8,7 +8,7 @@ Una de las decisiones de diseño más importantes fue la de escoger un sistema d
 
 \subsection{Integración de hardware}
 
-El microcontrolador corresponde al Infineon XMC4800, pues posee un conjunto de periféricos ideal para el tipo de aplicación requerida. Para reducir el tiempo de desarrollo y simplificar la implmentación se usó como elemento base la placa de desarrollo del microcontrolador y puente H, de esta forma se diseñó una PCB para el montaje de las placas de desarrollo usando una estructura por pisos (\textit{stackable}).
+El microcontrolador corresponde al Infineon XMC4800, pues posee un conjunto de periféricos ideal para el tipo de aplicación requerida. Para reducir el tiempo de desarrollo y simplificar la implementación se usó como elemento base la placa de desarrollo del microcontrolador y puente H, de esta forma se diseñó una PCB para el montaje de las placas de desarrollo usando una estructura por pisos (\textit{stackable}).
 
 \subsubsection{PCB}
 
@@ -30,11 +30,11 @@ Otros Elementos pasivos (resistencias y capacitores) & THT                      
 \caption{Componentes del PCB.}
 \end{table}
 
-Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se escoje un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
+Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se escoge un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
 
-Para el diseño de los circuitos equemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estandar del software, por lo que tuvo que ser diseñado.
+Para el diseño de los circuitos esquemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estándar del software, por lo que tuvo que ser diseñado.
 
-Un hecho importante a la hora del diseño es considerar las limitaciones la máquinaria disponible para la construcción, así para la construcción del PCB se cuenta con una máquina de protipado LPKF\textregistered,  cuya principal limitante es que que no realiza vias, así el diseño intenta minizar el uso de vias. Un elemento de diseño escencial en los PCB, corresponde a considerar los flujos de corriente y sus retornos, pues es el parametro principal al momento de considerar el ancho de las pistas y ubicación de componentes, en este sentido todas las pistas encargadas de transportar la corriente hacía el motor son un ancho mayor y todos los componentes asociados, como el sensor de corriente, se encuentran ubicados de forma próxima.
+Un hecho importante a la hora del diseño es considerar las limitaciones la máquinaria disponible para la construcción, así para la construcción del PCB se cuenta con una máquina de prototipado LPKF\textregistered,  cuya principal limitante es que que no realiza vias, así el diseño intenta minimizar el uso de vías. Un elemento de diseño esencial en los PCB, corresponde a considerar los flujos de corriente y sus retornos, pues es el parámetro principal al momento de considerar el ancho de las pistas y ubicación de componentes, en este sentido todas las pistas encargadas de transportar la corriente hacía el motor son un ancho mayor y todos los componentes asociados, como el sensor de corriente, se encuentran ubicados de forma próxima.
 
 Para ejecutar el diseño se necesario hacer uso de un software CAM especializado en el cual se importan los diseños generados en Eagle\textregistered.  Para soldar el sensor de corriente TLI4970 es necesario emplear una soldadora BGA para soldar el integrado a la PCB, pues los puntos de soldadura (\textit{pads}) se encuentran por debajo del integrado. La Figura \ref{cap4_pcb} muestra la PCB obtenida desde la máquina LPKF\textregistered.
 
@@ -56,7 +56,7 @@ Para ejecutar el diseño se necesario hacer uso de un software CAM especializado
   \label{cap4_pcb}
 \end{figure}
 
-Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación del microcontrolador se dispone por un costado, mientras que la alimentación del puente H se encuentra en la parte posterior de la placa, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en un extremo de la placa. 
+Una vez montados todos los componentes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación del microcontrolador se dispone por un costado, mientras que la alimentación del puente H se encuentra en la parte posterior de la placa, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en un extremo de la placa. 
 
 \begin{figure}[H]
   \centering
@@ -304,6 +304,21 @@ Luego de ajustar los puntos de referencia y ejes de cada una de las articulacion
   \caption{Modelo del robot Scorbot en \textit{RViz}.}
   \label{cap4_scorbot_rviz}
 \end{figure}
+
+\subsubsection{MoveIt!}
+
+MoveIt! corresponde a un framework de planificación sobre ROS, provee interfaces para uso de algoritmos de \textit{path planning} para cadenas cinemáticas, con un especial enfoque en brazos roboticos.
+
+Una vez definido el modelo del brazo robótico en URDF, la configuración de MoveIt! es directa, pues se cuenta con el paquete \textit{MoveIt! Setup Assistant}, que permite definir los siguientes archivos de configuración de forma gráfica:
+
+\begin{itemize}
+\item \texttt{scorbot.srdf}: Posee el nombre de los grupos cinemáticos y define la \textit{Allowed Collision Matrix}, la cual indica que enlaces de la cadena cinemática tienen permitido estar en contacto, por ejemplo, los \textit{links} que forman el gripper tienen permitido el contacto mutuo; y los enlaces que nunca se tocarán por limitaciones fisicas de la cadena cinematica (limites de articulaciones, distancia).
+
+\item \texttt{kinematics.yaml}: En él se encuntra la configuración del \textit{plug in} de cinemática inversa usado, en el caso del robot Scorbot se usa el \textit{plug in} por defecto que corresponde \textit{KDLKinematicsPlugin}, algoritmo de tipo iterativo basado en la inversión del Jacobiano de la cadena cinemática.
+
+\item \texttt{ompl\_planning.yaml}: Se encuentra la configuración de los planificadores, para el robot Scorbot se ha usado \textit{LBKPIECEkConfigDefault}. 
+
+\end{itemize}
 
 \subsubsection{Integración de la interfaz Phantom Omni}
 
