@@ -191,6 +191,62 @@ float32_t PIDLim_Update(PIDLim_t * handle, float32_t in)
 
 \end{description}
 
+\subsubsection{Estimación de velocidad}
+
+El robot Scorbot incorpora encoders ópticos incrementales en cada una de las articulaciones, el eje del enc
+oder esta conectado a la parte posterior del eje del motor y cuentan con $96$ ciclos por revolución (CPR), va
+lor se denotado por $N_r$. Durante durante cada ciclo del encoder eje existen cuatro eventos de cambio sus sa
+lidas, por lo que el ángulo minímo detectable corresponde a $\frac{\Delta\theta}{4}$, donde $\Delta\theta$ se obtiene de la Ecuación \ref{cap4_encoder} y corresponde a la separación angular de las ranuras del disco del encoder.
+
+\begin{equation}\label{cap4_encoder}
+	\Delta\theta = \frac{2\pi}{N_r}
+\end{equation}
+
+Durante pruebas de lazo abierto realizadas al robot se determinó que la velocidad máxima de los motores es 
+cercana a las \si{4600}{rpm} (ver Figura \ref{cap4_max_velocidad}). La velocidad se estimó usando el diferenc
+iación discreta (método de Euler) sobre los datos de posición.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.6]{img/cap4/max_velocidad}
+	\caption{Perifil de velocidad angular de la articulación \textit{base}.}
+	\label{cap4_max_velocidad}
+\end{figure}
+
+Uno de los problemas con estimar la velocidad usando el deferenciación discreta corresponde al alto nivel d
+e ruido y error en la estimación a bajas velocidades. Por estos motivos se considero el estimador presentado 
+en la sección . Usando este estimador se evita una diferenciación discreta directa sobre los datos, pues se r
+ealiza sobre el valor estimado de la posición. Además permite un ajuste simple del ancho de banda del observa
+dor mediante el ajuste de la constante $k_p$.
+
+El observador corresponde a un sistema de segundo orden, con dos polos y dos ceros. Al discretizar la expre
+sión observador usando el metodo de Tustin, se obtienen los siguientes coeficientes para su implementación di
+gital:
+
+\begin{eqnarray}
+b_0 &=& \frac{4 k_p + 2 T_s k_i}{2 T_s k_p + T_s^2 k_i + 4} \\
+b_1 &=& -\frac{ 8 k_p}{2 T_s k_p + T_s^2 k_i + 4}\\
+b_2 &=& \frac{4 k_p - 2 T_s k_i}{2 T_s k_p + T_s^2 k_i + 4}
+\end{eqnarray}
+
+\begin{eqnarray}
+a_0 &=& 1 \\
+a_1 &=& \frac{ 2 T_s^2 k_i - 8}{2 T_s k_p + T_s^2 k_i + 4}\\
+a_2 &=& \frac{-2 T_s k_p  + T_s^2 k_i + 4}{2 T_s k_p + T_s^2 k_i + 4}
+\end{eqnarray}
+
+La Figura \ref{cap4_est_velocidad} muestra los resultados obteneidos por el estimador de velocidad al considerar un anche de banda para el observador $B = \SI{100}{\hertz}$.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.6]{img/cap4/velocidad_estimacion}
+	\caption{Estimación de velocidad es comparada con método de diferenciación.}
+	\label{cap4_est_velocidad}
+\end{figure}
+
+
+
+
 
 \subsection{ROS}
 
