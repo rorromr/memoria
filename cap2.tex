@@ -4,7 +4,7 @@
 
 \subsection{Características Scorbot ER VII}
 
-El Scorbot-ER VII es un  manipulador robótica de cinco grados de libertad (5 DOF) diseñado para propósitos educacionales. Posee la configuración estándar de robot industrial antropomórfico (Figura \ref{cap2_scorbot}), ie. \textit{base}, \textit{shoulder} y \textit{elbow}.
+El Scorbot-ER VII es un  manipulador robótica de cinco grados de libertad (5 DOF) diseñado para propósitos educacionales. Posee la configuración estándar de robot industrial antropomórfico (Figura \ref{cap2_scorbot}), ie. que cuenta con las articulaciones \textit{base}, \textit{shoulder} y \textit{elbow}.
 
 \begin{figure}[ht]
   \centering
@@ -13,42 +13,52 @@ El Scorbot-ER VII es un  manipulador robótica de cinco grados de libertad (5 DO
   \label{cap2_scorbot}
 \end{figure}
 
-El sistema de actuación del robot se basa en el uso de poleas reductoras seguidas de engranajes armónicos (\textit{harmonic drives}) actuados por motores de corriente continua de imanes permanentes de una corriente máxima de \SI{6,22}{\ampere} a \SI{12,0}{\volt}. La carga máxima que puede llevar el robot es de \SI{2}{\kilo\gram} (incluido el peso del efector). Esta configuración asegura que el sistema es seguro para operar fuera de una jaula de seguridad \cite{scorbot1998}.
+El sistema de actuación presente en las articulaciones del robot, como se ve la Figura \ref{cap2_scorbot_drive}, se basa en el uso una polea reductora (\textit{timing belt}) seguida de una  transmisión armónica (\textit{harmonic drive}), siendo movida por un motor de corriente continua de imanes permanentes (PMDC). Los ejes 4 y 5 solo poseen el \textit{harmonic drive} como elemento de reducción mecánica. La carga máxima que puede llevar el robot es de \SI{2}{\kilo\gram} (incluido el peso del efector). Esta configuración asegura que el sistema es seguro para operar fuera de una jaula de seguridad \cite{scorbot1998}.
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{img/cap2/scorbot_drive}
+	\caption{Sistema de actuación usado en las articulaciones del robot Scorbot.}
+	\label{cap2_scorbot_drive}
+\end{figure}
+
+La Tabla \ref{cap2_scorbot_specs} muestra las especificaciones de cada uno de las articulaciones del robot Scorbot.
 
 \begin{table}[]
 \centering
 \begin{tabular}{|l|l|l|l|}
 \hline
 \multicolumn{1}{|c|}{\textbf{Eje}} & \textbf{Nombre} & \textbf{Rango} & \multicolumn{1}{c|}{\textbf{Especificaciones}} \\ \hline
-\multicolumn{1}{|c|}{\multirow{5}{*}{1}} & \multirow{5}{*}{Base} & \multirow{5}{*}{310} & Voltaje: 12,0 v \\ \cline{4-4} 
+\multicolumn{1}{|c|}{\multirow{5}{*}{1}} & \multirow{5}{*}{Base} & \multirow{5}{*}{\ang{310}} & Voltaje: \SI{12}{\volt} \\ \cline{4-4} 
 \multicolumn{1}{|c|}{} &  &  & Motor Pittman-9434G697 \\ \cline{4-4} 
 \multicolumn{1}{|c|}{} &  &  & Encoder HP-HEDS-5500-K11 (incremental) 96 pulsos/rev \\ \cline{4-4} 
-\multicolumn{1}{|c|}{} &  &  & Reducción Harmonic gear razón 1:160 \\ \cline{4-4} 
-\multicolumn{1}{|c|}{} &  &  & Transmisión Timing belt razón 1:3 \\ \hline
-\multirow{5}{*}{2} & \multirow{5}{*}{Shoulder} & \multirow{5}{*}{170} & Voltaje: 12,0 v \\ \cline{4-4} 
+\multicolumn{1}{|c|}{} &  &  & \textit{Harmonic drive} razón 1:160 \\ \cline{4-4} 
+\multicolumn{1}{|c|}{} &  &  & \textit{Timing belt} razón 1:3 \\ \hline
+\multirow{5}{*}{2} & \multirow{5}{*}{Shoulder} & \multirow{5}{*}{\ang{170}} & Voltaje: \SI{12}{\volt} \\ \cline{4-4} 
  &  &  & Motor Pittman-9434G697 \\ \cline{4-4} 
  &  &  & Encoder HP-HEDS-5500-K11 (incremental) 96 pulsos/rev \\ \cline{4-4} 
- &  &  & Reducción Harmonic gear razón 1:160 \\ \cline{4-4} 
- &  &  & Transmisión Timing belt razón 1:3 \\ \hline
-\multirow{5}{*}{3} & \multirow{5}{*}{Elbow} & \multirow{5}{*}{225} & Voltaje: 12,0 v \\ \cline{4-4} 
+ &  &  & \textit{Harmonic drive} razón 1:160 \\ \cline{4-4} 
+ &  &  & \textit{Timing belt} razón 1:3 \\ \hline
+\multirow{5}{*}{3} & \multirow{5}{*}{Elbow} & \multirow{5}{*}{\ang{225}} & Voltaje: \SI{12}{\volt} \\ \cline{4-4} 
  &  &  & Motor Pittman-9434G697 \\ \cline{4-4} 
  &  &  & Encoder HP-HEDS-5500-K11 (incremental) 96 pulsos/rev \\ \cline{4-4} 
- &  &  & Reducción Harmonic gear razón 1:160 \\ \cline{4-4} 
- &  &  & Transmisión Timing belt razón 1:3 \\ \hline
-\multirow{5}{*}{4} & \multirow{5}{*}{Wrist pitch} & \multirow{5}{*}{180} & Voltaje: 12,0 v \\ \cline{4-4} 
+ &  &  & \textit{Harmonic drive} razón 1:160 \\ \cline{4-4} 
+ &  &  & \textit{Timing belt} razón 1:3 \\ \hline
+\multirow{5}{*}{4} & \multirow{5}{*}{Wrist pitch} & \multirow{5}{*}{\ang{180}} & Voltaje: \SI{12}{\volt} \\ \cline{4-4} 
  &  &  & Motor Pittman-9413G698 \\ \cline{4-4} 
  &  &  & Encoder HP-HEDS-5500-K11 (incremental) 96 pulsos/rev \\ \cline{4-4} 
- &  &  & Reducción Harmonic gear razón 1:100 \\ \cline{4-4} 
- &  &  & Transmisión Timing belt razón 1:3 \\ \hline
-\multirow{4}{*}{5} & \multirow{4}{*}{Wrist roll} & \multirow{4}{*}{360} & Voltaje: 12,0 v \\ \cline{4-4} 
+ &  &  & \textit{Harmonic drive} razón 1:100 \\ \cline{4-4} 
+ &  &  & \textit{Timing belt} razón 1:3 \\ \hline
+\multirow{4}{*}{5} & \multirow{4}{*}{Wrist roll} & \multirow{4}{*}{\ang{360}} & Voltaje: \SI{12}{\volt} \\ \cline{4-4} 
  &  &  & Motor Pittman-9413G698 \\ \cline{4-4} 
  &  &  & Encoder HP-HEDS-5500-K11 (incremental) 96 pulsos/rev \\ \cline{4-4} 
- &  &  & Reducción Harmonic gear razón 1:100 \\ \hline
+ &  &  & \textit{Harmonic drive} razón 1:100 \\ \hline
 \end{tabular}
 \caption{Especificaciones de articulaciones robot Scorbot ER VII.}
-\label{my-label}
+\label{cap2_scorbot_specs}
 \end{table}
+
+
 
 
 \section{Conceptos de cinemática}
