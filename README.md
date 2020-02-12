@@ -17,3 +17,7 @@ Para trabajar con versiones más actualizadas de Latex es recomendable usar este
 ## Plantilla
 
 Trabajo está basado en la [plantilla LaTeX](https://github.com/FCFM-ADI/memoria-latex) publicada por el ADI.
+
+## Diccionario español
+
+[Diccionarios de OpenOffice](https://github.com/LibreOffice/dictionaries/tree/master/es)

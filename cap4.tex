@@ -30,9 +30,15 @@ Otros Elementos pasivos (resistencias y capacitores) & THT                      
 \caption{Componentes del PCB.}
 \end{table}
 
+<<<<<<< HEAD
 Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se elige un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
 
 Para el diseño de los circuitos esquemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estandar del software, por lo que tuvo que ser diseñado.
+=======
+Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se escoge un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
+
+Para el diseño de los circuitos esquemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estándar del software, por lo que tuvo que ser diseñado.
+>>>>>>> 0f4b817ad022930e520c485b2447651b7d559e25
 
 Un hecho importante a la hora del diseño es considerar las limitaciones la maquinaria disponible para la construcción, así para la construcción del PCB se cuenta con una máquina de prototipado LPKF\textregistered,  cuya principal limitante es que que no realiza vías, así el diseño intenta minimizar el uso de vías. Un elemento de diseño esencial en los PCB, corresponde a considerar los flujos de corriente y sus retornos, pues es el parámetro principal al momento de considerar el ancho de las pistas y ubicación de componentes, en este sentido todas las pistas encargadas de transportar la corriente hacía el motor son un ancho mayor y todos los componentes asociados, como el sensor de corriente, se encuentran ubicados de forma próxima.
 
@@ -56,22 +62,7 @@ Para ejecutar el diseño se necesario hacer uso de un software CAM especializado
   \label{cap4_pcb}
 \end{figure}
 
-Una vez montados todos los componenetes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación del microcontrolador se dispone por un costado, mientras que la alimentación del puente H se encuentra en la parte posterior de la placa, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en un extremo de la placa. Notar que la salida de la placa del puente H se realiza mediente un conector banana, por lo que es necesario un cableado entre las placas. La Tabla \ref{cap4_especificaciones} muestra las especificaciones eléctricas del módulo de control.
-
-\begin{table}[]
-\centering
-\begin{tabular}{|l|l|l|l|}
-\hline
-\textbf{Conexión}        & \textbf{Tipo} & \textbf{Tipo conector} & \textbf{Especificaciones eléctricas} \\ \hline
-Alimentación puente H    & I             & Banana                 & \SI{12}{\volt} \SI{5}{\ampere}                       \\ \hline
-Alimentación electrónica & I             & Pin header \SI{0.1}{\inchQ}           & \SI{5}{\volt} \SI{500}{\milli\ampere} \\ \hline
-EtherCAT In              & I/O           & RJ45                   & Ethernet CAT 5                        \\ \hline
-EtherCAT Out             & I/O           & RJ45                   & Ethernet CAT 5                        \\ \hline
-Terminal motor Scorbot   & I/O           & DB9                    & Según \cite{scorbot1998}        \\ \hline
-\end{tabular}
-\caption{Especificaciones electricas del módulo de control}
-\label{cap4_especificaciones}
-\end{table}
+Una vez montados todos los componentes del PCB se obtiene lo mostrado en la Figura \ref{cap4_controlador_completo}, la alimentación del microcontrolador se dispone por un costado, mientras que la alimentación del puente H se encuentra en la parte posterior de la placa, los conectores RJ-45 para la red EtherCAT se encuentran juntos para facilitar la conexión \textit{daisy chain} y el conector DB9 para los motores del robot Scorbot se encuentra en un extremo de la placa. 
 
 \begin{figure}[H]
   \centering
@@ -80,49 +71,18 @@ Terminal motor Scorbot   & I/O           & DB9                    & Según \cite
   \label{cap4_controlador_completo}
 \end{figure}
 
-\subsection{Conexión en \textit{daisy chain}}
+\section{Bus de campo}
 
-El bus de campo EtherCAT se conecta con una topología \textit{daisy chain} usando cables de par trenzado con conectores RJ45. Dado que EtherCAT usa la capa física y de enlace de datos de Ethernet, se puede emplear el mismo cableado usado para redes de computación. De esta forma los controladores se conectan en serie como se muestra en la Figura \ref{cap4_diagrama_daisy_chain}, procurando conectar el puerto EtherCAT In con el puerto EtherCAT Out del controlador contiguo. 
+El bus de campo EtherCAT se conecta con una topología \textit{Daisy chain} usando cables de par trenzado con conectores RJ45. Dado que EtherCAT usa la capa física y de enlace de datos de Ethernet, se puede emplear el mismo cableado usado para redes de computación.
+
+De esta forma se configuró un montaje para disponer de todos los controladores de forma alineada, esta configuración se muestra en la Figura \ref{cap4_montaje}
+
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\textwidth]{img/cap4/scorbot_hardware}
-  \caption{Diagrama de conexión \textit{daisy chain}.}
-  \label{cap4_diagrama_daisy_chain}
-\end{figure}
-
-Todos los controladores estan conectados siguiendo la mismo orden fisíco de la cadena cinemática del robot. Así el primer controlador corresponde al de la articulación base y la entrada EtherCAT In del controlador se debe conectar a la interfaz de red del computador que actua como máster.
-
-
-\subsubsection{Montaje}
-
-Considerando que todos los controladores deben estar conectados de forma estable para para realizar pruebas, se configuró un montaje para disponer de todos los controladores de forma ordenada y alineada, se tomó como base el diagrama mostrado en la Figura \ref{cap4_montaje}. 
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{img/cap4/scorbot_montaje}
-  \caption{Esquema de montaje de controladores.}
-  \label{cap4_diagrama_montaje}
-\end{figure}
-
-Para la alimentación de \SI{5}{\volt} se ha usado una fuente conmutada de \SI{5}{\ampere}, así mismo se uso una fuente conmutada de \SI{12}{\volt} de  \SI{30}{\ampere} para la alimentación de los puente H. Ambas fuentes tienen como entrada \SI{220}{VAC} y son activadas por el interruptor principal. Además se ha instalado un interruptor de emergencia que corta la alimentación de \SI{12}{\volt}, permitiendo dejar inactivo el movimiento del robot en caso de algún movimiento inesperado.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{img/cap4/montaje}
+  \includegraphics[width=0.5\textwidth]{img/cap4/board}
   \caption{Montaje de controladores.}
   \label{cap4_montaje}
-\end{figure}
-
-Los conectores DB9 desde el robot Scorbot se han fijado a los controladores usando los propios tornillos del conector DB9, se han usado una serie de bridas para mantener fijo el cable principal hacia el robot Scorbot. Con este montaje se obtiene una seria de ventajas, la primera de ellas es que solo se exponen dos conectores hacia los dispositivos externos: alimentación de la red y conexión Ethernet hacia el EtherCAT master; y solo se cuenta con un botón de encendido que alimenta a todos los controladores.
-
-La Figura \ref{cap4_completo} muestra el robot Scorbot conectado al montaje realizado con los controladores.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{img/cap4/scorbot_completo}
-  \caption{Robot Scorbot conectado a los controladores.}
-  \label{cap4_completo}
 \end{figure}
 
 \section{Software}
@@ -150,8 +110,6 @@ Corresponde a la primer bloque de código ejecutado, aquí se configuran todos l
 Así se denomina a la determinación de la posición inicial de cada articulación del robot Scorbot (\textit{home position}). Dado que el robot Scorbot solo cuenta con encoders incrementales, el procedimiento de \textit{homing} debe realizarce cada vez que se inicie el robot.
 
 El robot cuenta con interruptores que permiten determinar la posición central de cada articulación, lamentablemente debido al estado del robot, estos interruptores se encuentran en mal estado, por lo que se decidio considerar la posición fisica del robot como posición \textit{home} al iniciar el robot. Esto se traduce en que el operador debe posicionar el robot en la posición \textit{home} al momento de encender el robot.
-
-Para simplificar el proceso anterior se desarrolló en el controlador EtherCAT un perametró que permite añadir un \textit{offset} de calibración en tiempo de ejecución, permitiendo simplificar el proceso de calibración.
 
 \subsubsection{EtherCAT mailbox}
 
@@ -241,24 +199,35 @@ float32_t PIDLim_Update(PIDLim_t * handle, float32_t in)
 
 \subsubsection{Estimación de velocidad}
 
-El robot Scorbot incorpora encoders ópticos incrementales en cada una de las articulaciones, el eje del encoder esta conectado a la parte posterior del eje del motor y cuentan con $96$ ciclos por revolución (CPR), valor se denotado por $N_r$. Durante durante cada ciclo del encoder eje existen cuatro eventos de cambio sus salidas, por lo que el ángulo minímo detectable corresponde a $\frac{\Delta\theta}{4}$, donde $\Delta\theta$ se obtiene de la Ecuación \ref{cap4_encoder} y corresponde a la separación angular de las ranuras del disco del encoder.
+El robot Scorbot incorpora encoders ópticos incrementales en cada una de las articulaciones, el eje del enc
+oder esta conectado a la parte posterior del eje del motor y cuentan con $96$ ciclos por revolución (CPR), va
+lor se denotado por $N_r$. Durante durante cada ciclo del encoder eje existen cuatro eventos de cambio sus sa
+lidas, por lo que el ángulo minímo detectable corresponde a $\frac{\Delta\theta}{4}$, donde $\Delta\theta$ se obtiene de la Ecuación \ref{cap4_encoder} y corresponde a la separación angular de las ranuras del disco del encoder.
 
 \begin{equation}\label{cap4_encoder}
-\Delta\theta = \frac{2\pi}{N_r}
+	\Delta\theta = \frac{2\pi}{N_r}
 \end{equation}
 
-Durante pruebas de lazo abierto realizadas al robot se determinó que la velocidad máxima de los motores es cercana a las \si{4600}{rpm} (ver Figura \ref{cap4_max_velocidad}). La velocidad se estimó usando el diferenciación discreta (método de Euler) sobre los datos de posición.
+Durante pruebas de lazo abierto realizadas al robot se determinó que la velocidad máxima de los motores es 
+cercana a las \si{4600}{rpm} (ver Figura \ref{cap4_max_velocidad}). La velocidad se estimó usando el diferenc
+iación discreta (método de Euler) sobre los datos de posición.
 
 \begin{figure}[ht]
-  \centering
-  \includegraphics[scale=0.6]{img/cap4/max_velocidad}
-  \caption{Perifil de velocidad angular de la articulación \textit{base}.}
-  \label{cap4_max_velocidad}
+	\centering
+	\includegraphics[scale=0.6]{img/cap4/max_velocidad}
+	\caption{Perifil de velocidad angular de la articulación \textit{base}.}
+	\label{cap4_max_velocidad}
 \end{figure}
 
-Uno de los problemas con estimar la velocidad usando el deferenciación discreta corresponde al alto nivel de ruido y error en la estimación a bajas velocidades. Por estos motivos se considero el estimador presentado en la sección . Usando este estimador se evita una diferenciación discreta directa sobre los datos, pues se realiza sobre el valor estimado de la posición. Además permite un ajuste simple del ancho de banda del observador mediante el ajuste de la constante $k_p$.
+Uno de los problemas con estimar la velocidad usando el deferenciación discreta corresponde al alto nivel d
+e ruido y error en la estimación a bajas velocidades. Por estos motivos se considero el estimador presentado 
+en la sección . Usando este estimador se evita una diferenciación discreta directa sobre los datos, pues se r
+ealiza sobre el valor estimado de la posición. Además permite un ajuste simple del ancho de banda del observa
+dor mediante el ajuste de la constante $k_p$.
 
-El observador corresponde a un sistema de segundo orden, con dos polos y dos ceros. Al discretizar la expresión observador usando el metodo de Tustin, se obtienen los siguientes coeficientes para su implementación digital:
+El observador corresponde a un sistema de segundo orden, con dos polos y dos ceros. Al discretizar la expre
+sión observador usando el metodo de Tustin, se obtienen los siguientes coeficientes para su implementación di
+gital:
 
 \begin{eqnarray}
 b_0 &=& \frac{4 k_p + 2 T_s k_i}{2 T_s k_p + T_s^2 k_i + 4} \\
@@ -275,11 +244,15 @@ a_2 &=& \frac{-2 T_s k_p  + T_s^2 k_i + 4}{2 T_s k_p + T_s^2 k_i + 4}
 La Figura \ref{cap4_est_velocidad} muestra los resultados obteneidos por el estimador de velocidad al considerar un anche de banda para el observador $B = \SI{100}{\hertz}$.
 
 \begin{figure}[ht]
-  \centering
-  \includegraphics[scale=0.6]{img/cap4/velocidad_estimacion}
-  \caption{Estimación de velocidad es comparada con método de diferenciación.}
-  \label{cap4_est_velocidad}
+	\centering
+	\includegraphics[scale=0.6]{img/cap4/velocidad_estimacion}
+	\caption{Estimación de velocidad es comparada con método de diferenciación.}
+	\label{cap4_est_velocidad}
 \end{figure}
+
+
+
+
 
 \subsection{ROS}
 
@@ -305,7 +278,6 @@ En esta sección se describirá la función de cada uno de los nodos que integra
   \caption{Diagrama de nodos y tópicos de la aplicación.}
   \label{cap4_scorbot_software}
 \end{figure}
-
 
 \begin{description}
 
@@ -349,7 +321,7 @@ ROS posee el paquete \texttt{ros\_control}, cuya función es facilitar la integr
   \label{cap4_scorbot_driver}
 \end{figure}
 
-La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Como se ha mensionado anteriormente, es el \texttt{controller\_manager} quien se encarga de la comunicación con ROS, usando distintos tópicos:
+La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorbot\_driver} como se ha señalado anteriormente. Como se ha mencionado anteriormente, es el \texttt{controller\_manager} quien se encarga de la comunicación con ROS, usando distintos tópicos:
 
 \begin{itemize}
 
@@ -370,9 +342,9 @@ La Figura \ref{cap4_scorbot_driver} muestra la estructura del nodo \texttt{scorb
 
 \subsubsection{Modelo URDF}
 
-El \textit{Unified Robot Description Format} (URDF) es un formato basado en XML (\textit{Extensible Markup Language}), corresponde al estandar para la representación de robots en el framework ROS. Este archivo de describe las propiedades cinemáticas y dinámicas del robot, básicamente se especifican las características de los enlaces (\textit{links}) y articulaciones (\textit{joints}).
+El \textit{Unified Robot Description Format} (URDF) es un formato basado en XML (\textit{Extensible Markup Language}), corresponde al estándar para la representación de robots en el framework ROS. Este archivo de describe las propiedades cinemáticas y dinámicas del robot, básicamente se especifican las características de los enlaces (\textit{links}) y articulaciones (\textit{joints}).
 
-El formato URDF usa una estructura de arbol para representar los distintos elementos del robot, esto impide la representación de mecanismos cerrados o \textit{loops}, sin embargo la estructura del robot Scorbot corresponde a una simple cadena cinemática. Escribir URDF directamente puede ser una tarea monotona y difícil de depurar, por lo que para crear el URDF del robot Scorot se usó una aproximación gráfica a partir de un modelo CAD.
+El formato URDF usa una estructura de arbol para representar los distintos elementos del robot, esto impide la representación de mecanismos cerrados o \textit{loops}, sin embargo la estructura del robot Scorbot corresponde a una simple cadena cinemática. Escribir URDF directamente puede ser una tarea monotona y difícil de depurar, por lo que para crear el URDF del robot Scorbot se usó una aproximación gráfica a partir de un modelo CAD.
 
 El modelo CAD se creó usando el software de modelamiento SolidWorks 2014 \textregistered, junto con el \textit{plugin} \texttt{sw\_urdf\_exporter} \cite{sw_urdf}, que permite generar el modelo URDF y archivos STL que representan los \textit{links} del robot. La Figura \ref{cap4_scorbot_cad} muestra el modelo del robot Scorbot en el software CAD en la posición \textit{home}.
 
@@ -391,6 +363,21 @@ Luego de ajustar los puntos de referencia y ejes de cada una de las articulacion
   \caption{Modelo del robot Scorbot en \textit{RViz}.}
   \label{cap4_scorbot_rviz}
 \end{figure}
+
+\subsubsection{MoveIt!}
+
+MoveIt! corresponde a un framework de planificación sobre ROS, provee interfaces para uso de algoritmos de \textit{path planning} para cadenas cinemáticas, con un especial enfoque en brazos roboticos.
+
+Una vez definido el modelo del brazo robótico en URDF, la configuración de MoveIt! es directa, pues se cuenta con el paquete \textit{MoveIt! Setup Assistant}, que permite definir los siguientes archivos de configuración de forma gráfica:
+
+\begin{itemize}
+\item \texttt{scorbot.srdf}: Posee el nombre de los grupos cinemáticos y define la \textit{Allowed Collision Matrix}, la cual indica que enlaces de la cadena cinemática tienen permitido estar en contacto, por ejemplo, los \textit{links} que forman el gripper tienen permitido el contacto mutuo; y los enlaces que nunca se tocarán por limitaciones fisicas de la cadena cinematica (limites de articulaciones, distancia).
+
+\item \texttt{kinematics.yaml}: En él se encuntra la configuración del \textit{plug in} de cinemática inversa usado, en el caso del robot Scorbot se usa el \textit{plug in} por defecto que corresponde \textit{KDLKinematicsPlugin}, algoritmo de tipo iterativo basado en la inversión del Jacobiano de la cadena cinemática.
+
+\item \texttt{ompl\_planning.yaml}: Se encuentra la configuración de los planificadores, para el robot Scorbot se ha usado \textit{LBKPIECEkConfigDefault}. 
+
+\end{itemize}
 
 \subsubsection{Integración de la interfaz Phantom Omni}
 
@@ -422,7 +409,7 @@ El nodo \texttt{scorbot\_teleop} no controla directamente al robot Scorbot, si n
   \label{cap4_scorbot_teleop}
 \end{figure}
 
-La función utilizada para el mapeo entre los \textit{joints} del Phantom Omni y el robot Scorbot esta basada en \cite{david}, donde se considera un \textit{workspace} (espacio de trabajo) proporcional. De esta forma, la función lineal presentada en la Ecuación \ref{cap4_scorbot_mapping} realiza el mapeo planteado.
+La función utilizada para el mapeo entre los \textit{joints} del Phantom Omni y el robot Scorbot sigue la linea planteada en \cite{david}, donde se considera un \textit{workspace} (espacio de trabajo) proporcional. De esta forma, la función lineal presentada en la Ecuación \ref{cap4_scorbot_mapping} realiza el mapeo planteado.
 
 \begin{equation}\label{cap4_scorbot_mapping}
 {\theta_S}_{i} = ({\theta_P}_{i} - {\Theta_{P-}}_{i}) \left(  \frac{{\Theta_{S+}}_{i} - {\Theta_{S-}}_{i}}{{\Theta_{P+}}_{i} - {\Theta_{P-}}_{i}}   \right) + {\Theta_{S-}}_{i} + H_i \, \mbox{con } i \in {1, \dots, 5}
@@ -457,9 +444,3 @@ Como se describió en la Sección \ref{cap4_teleoperacion}, el nodo \texttt{scor
   \caption{Estructura de transformadas del sistema.}
   \label{cap4_tf}
 \end{figure}
-
-
-
-
-
-
