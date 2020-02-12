@@ -30,15 +30,11 @@ Otros Elementos pasivos (resistencias y capacitores) & THT                      
 \caption{Componentes del PCB.}
 \end{table}
 
-<<<<<<< HEAD
-Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se elige un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
 
-Para el diseño de los circuitos esquemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estandar del software, por lo que tuvo que ser diseñado.
-=======
-Dada que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se escoge un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
+Dado que existen componentes SMT (\textit{Surface Mount Technology}) y THT (\textit{Through Hole Technology}), se elige un diseño usando dos capas. En la parte superior se dispone el montaje para la placa de desarrollo XMC4800, sensor de corriente y conector DB9 para el motor, en lado posterior se ubica el montaje para el puente H.
 
-Para el diseño de los circuitos esquemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librarías de sus productos para éste software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estándar del software, por lo que tuvo que ser diseñado.
->>>>>>> 0f4b817ad022930e520c485b2447651b7d559e25
+Para el diseño de los circuitos esquemáticos y PCB (Ver \ref{anexo_esq}) se usó el software Eagle\textregistered 7.5.0, que es un estándar para proyectos de baja complejidad y los fabricantes proveen librerías de sus productos para el software. El sensor de corriente TLI4970 usa un \textit{footprint} especial \texttt{PG-TISON-8-1} que no se encuentra en la librería estándar del software, por lo que tuvo que ser diseñado.
+
 
 Un hecho importante a la hora del diseño es considerar las limitaciones la maquinaria disponible para la construcción, así para la construcción del PCB se cuenta con una máquina de prototipado LPKF\textregistered,  cuya principal limitante es que que no realiza vías, así el diseño intenta minimizar el uso de vías. Un elemento de diseño esencial en los PCB, corresponde a considerar los flujos de corriente y sus retornos, pues es el parámetro principal al momento de considerar el ancho de las pistas y ubicación de componentes, en este sentido todas las pistas encargadas de transportar la corriente hacía el motor son un ancho mayor y todos los componentes asociados, como el sensor de corriente, se encuentran ubicados de forma próxima.
 
