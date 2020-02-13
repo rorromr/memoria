@@ -22,14 +22,30 @@ El sistema de actuación presente en las articulaciones del robot, como se ve la
 	\label{cap2_scorbot_drive}
 \end{figure}
 
-La Tabla \ref{cap2_scorbot_specs} muestra las especificaciones de cada uno de las articulaciones del robot Scorbot.
+La Tabla \ref{cap2_scorbot_specs} muestra las especificaciones de cada uno de las articulaciones del robot Scorbot. Mientras que la Table \ref{cap2_scorbot_motor_specs} muestra los parámetros de los motores usados en las articulaciones.
+
+\begin{table}[]
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\multicolumn{1}{|c|}{\textbf{Parámetro}} & \multicolumn{1}{|c|}{\textbf{Símbolo}} & \multicolumn{1}{c|}{\textbf{Motor Pittman-9434}}     & \multicolumn{1}{c|}{\textbf{Motor Pittman-9413}}     \\ \hline
+		Constante motor           & $k_m$ & $\SI{2.13e-2}{\frac{\newton\metre}{\sqrt{\watt}}}$ & $\SI{1.37e-2}{\frac{\newton\metre}{\sqrt{\watt}}}$ \\ \hline
+		Constante torque          & $k_T$ & $\SI{3.65e-2}{\frac{\newton\metre}{\ampere}}$ & $\SI{3.95e-2}{\frac{\newton\metre}{\ampere}}$ \\ \hline
+		Resistencia de armadura   & $R_a$ & $\SI{2.96}{\ohm}$ & $\SI{8.33}{\ohm}$ \\ \hline
+		Inductancia de armadura   & $L_a$ & $\SI{2.51}{\milli\henry}$ & $\SI{6.17}{\milli\henry}$ \\ \hline
+		Inercia del eje           & $J$   & $\SI{4.17e-6}{\kilogram\metre^2}$ & $\SI{2.8e-6}{\kilogram\metre^2}$ \\ \hline
+		Coeficiente roce viscoso  & $B$   & $\SI{4.50e-4}{\frac{\newton\metre}{\radian\per\second}}$ & $\SI{1.9e-4}{\frac{\newton\metre}{\radian\per\second}}$ \\ \hline
+	\end{tabular}
+	\caption{Especificaciones de motores PMDC.}
+	\label{cap2_scorbot_motor_specs}
+\end{table}
 
 \begin{table}[]
 \centering
 \begin{tabular}{|l|l|l|l|}
 \hline
 \multicolumn{1}{|c|}{\textbf{Eje}} & \textbf{Nombre} & \textbf{Rango} & \multicolumn{1}{c|}{\textbf{Especificaciones}} \\ \hline
-\multicolumn{1}{|c|}{\multirow{5}{*}{1}} & \multirow{5}{*}{Base} & \multirow{5}{*}{\ang{310}} & Voltaje: \SI{12}{\volt} \\ \cline{4-4} 
+
+{\multirow{5}{*}{1}} & \multirow{5}{*}{Base} & \multirow{5}{*}{\ang{310}} & Voltaje: \SI{12}{\volt} \\ \cline{4-4} 
 \multicolumn{1}{|c|}{} &  &  & Motor Pittman-9434G697 \\ \cline{4-4} 
 \multicolumn{1}{|c|}{} &  &  & Encoder HP-HEDS-5500-K11 (incremental) 96 pulsos/rev \\ \cline{4-4} 
 \multicolumn{1}{|c|}{} &  &  & \textit{Harmonic drive} razón 1:160 \\ \cline{4-4} 
@@ -90,9 +106,11 @@ La obtención de modelos exactos de cinemática directa e inversa es tratado de 
 
 Aunque las nuevas y eficaces teorías y metodologías de diseño de controladores se están desarrollando continuamente en el campo del control automático, los controladores Proporcional Integral Derivativo (PID) son todavía los controladores más ampliamente utilizados en la industria debido a la ventajosa relación costo-beneficio que pueden proporcionar. De hecho, aunque son relativamente simples de usar, son capaces de lograr un desempeño satisfactorio en muchas tareas de control de procesos. De hecho, su larga historia y el \textit{know-how} que se ha desarrollado a lo largo de los años lo ha consolidado como el controlador de retroalimentación estándar \cite{practical_pid}.
 
+\subsection{Control proporcional}
+
 Aplicar un controlador PID consiste en aplicar la suma de tres acciones de control: la acción proporcional, la acción integral y la acción derivativa. Estas acciones se describen a continuación.
 
-\subsubsection{Control proporcional}
+\subsection{Control proporcional}
 En control proporcional la acción de control es proporcional al error actual del sistema, como se muestra en la expresión (\ref{ctrl-kp}).
 
 \begin{equation}\label{ctrl-kp}
@@ -105,7 +123,7 @@ Donde $K_p$ es la constante proporcional. El significado es directo, pues implem
 C(s) = K_p
 \end{equation}
 
-\subsubsection{Control integral}
+\subsection{Control integral}
 
 La acción interal es proporcional a la integral del error de control, es decir, esta dada por la expresión (\ref{ctrl-int-t}).
 
@@ -122,7 +140,7 @@ La presencia de un polo en origen del plano complejo permite la reducción del e
 
 La aplicación conjunta de una acción proporcionar e integral da origen al controlador PI, ampliamente usado para resolver problemas oscilatorios de controladores On Off y error estacionario de controladores proporcionales. Si el control integral esta presente, el fenómeno de \textit{windup} puede ocurrir ante la presencia de saturación de la variable controlada.
 
-\subsubsection{Control derivativo}
+\subsection{Control derivativo}
 
 Mientras la acción de control proporcional esta basada en el valor actual del error de control y la acción integral esta basada en el los valores pasados del error de control, la acción derivativa esta basada en la predicción de los valores futuros del error de control. Una ley de control derivativa ideal se muestra en la expresión ().
 
@@ -149,7 +167,7 @@ u(t) = K_p \left( e(t) + T_d \frac{de}{dt} \right)
 
 Esto corresponde naturalmente a un controlador PD. La variable controlada en $t$ esta también calculada usando una estimación del error de control en $t+T_d$. Por esta razón, se establece que el control derivativo añade elementos de control predictivo. Esto parece tener un gran potencial para mejorar el desempeño, sin embargo, existen algunos problemas en la implementación de este tipo de controladores, en especial las relacionadas con la amplificación del ruido de alta frecuencia.
 
-\subsubsection{Discretización de controladores}
+\subsection{Discretización de controladores}
 
 En la sección pasada se describió la función de los controladores PID continuos, gran parte de las aplicaciones de control actuales se realizan con ayuda elementos digitales, como microcontroladores o FPGA, por lo que los controladores deben ser llevados al dominio discreto para ser implementados en estas plataformas.
 
@@ -179,7 +197,7 @@ z &\approx& \frac{1+s \frac{T_s}{2}}{1-s \frac{T_s}{2}} \label{cap2_tustin}.
 s \approx \frac{2}{T_s} \frac{1-z^{-1}}{1+z^{-1}} = \frac{2}{T_s} \frac{1-w}{1+w}
 \end{equation}
 
-\subsubsection{Implementación de controladores digitales}
+\subsection{Implementación de controladores digitales}
 
 Para describir la implementación de un controlador digital, consideremos un control integral, donde $k_i$ corresponde a la contante integral:
 
